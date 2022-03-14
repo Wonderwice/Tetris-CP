@@ -100,7 +100,7 @@ let init_param() : t_param =
 let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
     set_color(col);
-    draw_rect(p.x, p.y, (base_draw.x * dilat),(base_draw.y * dilat));    
+    draw_rect(p.x * dilat, p.y * dilat, (base_draw.x * dilat),(base_draw.y * dilat));    
   )
 ;;
 
@@ -128,8 +128,7 @@ let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_
 
 open_graph(240,520);;
 clear_graph();;
-drawfill_absolute_pt({x=0; y=0},{x=1; y = 1}, 40, grey);;
-
+drawfill_absolute_pt({x=1; y=1},{x=2; y = 2}, 40, grey);;
 
 (** draw_relative_pt draws the outline of a square on the screen.
     The point p is defined relatively of base_point.
@@ -140,10 +139,10 @@ drawfill_absolute_pt({x=0; y=0},{x=1; y = 1}, 40, grey);;
     col is the choosen color *)
 
 let draw_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
-  (
-    
-  )
+    draw_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
 ;;
+
+draw_relative_pt({x = 0; y = 0},{x = 1; y = 1},{x = 1; y = 1}, 40, black);;
 
 (** ---mix---*)
 
