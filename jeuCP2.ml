@@ -111,7 +111,7 @@ let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_colo
 let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
     set_color(col);
-    fill_rect(p.x + 1, p.y + 1, (base_draw.x * dilat) - 2,(base_draw.y * dilat) - 2);
+    fill_rect((p.x * dilat) + 1, (p.y * dilat) + 1, (base_draw.x * dilat) - 2,(base_draw.y * dilat) - 2);
   )
 ;;
 
@@ -126,9 +126,7 @@ let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_
   )
 ;;
 
-open_graph(240,520);;
-clear_graph();;
-drawfill_absolute_pt({x=1; y=1},{x=2; y = 2}, 40, grey);;
+(* open_graph(240,520) *)
 
 (** draw_relative_pt draws the outline of a square on the screen.
     The point p is defined relatively of base_point.
@@ -142,15 +140,17 @@ let draw_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * 
     draw_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
 ;;
 
-draw_relative_pt({x = 0; y = 0},{x = 1; y = 1},{x = 1; y = 1}, 40, black);;
-
 (** ---mix---*)
 
-let fill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit = ();;
+let fill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
+   fill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
+;;
 
 (** ---mix--- *)
 
-let drawfill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit = ();;
+let drawfill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
+   drawfill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
+;;
 
 (** draw_pt_list is used to draw multiples squares which are referenced in the l t_point list,
     base_point is the local origin point,
@@ -158,7 +158,12 @@ let drawfill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_poin
     dilat is the dilation (lenght of the square),
     col is the choosen color *)
 
-let draw_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point* t_point * int * t_color) : unit = ();;
+let draw_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point* t_point * int * t_color) : unit =
+  for i = 0 to (len(l)-1)
+  do
+    draw_relative_pt(nth(l,i),base_pt,base_draw,dilat,col)
+  done;
+;;
 
 (** fill_pt_list is used to draw multiples squares which are referenced in the l t_point list,
     base_point is the local origin point,
@@ -166,7 +171,12 @@ let draw_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point* t_p
     dilat is the dilation (lenght of the square),
     col is the choosen color *)                                                                                                
 
-let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_point * int * t_color) : unit=();;
+let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_point * int * t_color) : unit=
+  for i = 0 to (len(l)-1)
+  do
+    fill_relative_pt(nth(l,i),base_pt,base_draw,dilat,col)
+  done;
+;;
 
 (** drawfill_pt_list is used to draw multiples fulled squares which are referenced in the l t_point list,
     base_point is the local origin point,
@@ -174,9 +184,12 @@ let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_p
     dilat is the dilation (lenght of the square),
     col is the choosen color *)
 
-let drawfill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point * t_point * int * t_color) : unit= ();;
-
-
+let drawfill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point * t_point * int * t_color) : unit=
+  for i = 0 to (len(l)-1)
+  do
+    drawfill_relative_pt(nth(l,i),base_pt,base_draw,dilat,col)
+  done;
+;;
                                                                                                                
 (* ----------------------------------------------- *)
 (* ----------------------------------------------- *)
