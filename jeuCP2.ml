@@ -1,5 +1,5 @@
 (** @author Loan Patris & Alexeï Czornyj & Styven Drui & Nicolas Moreau*)
-(* 3 repères : global en px, interne au tetris, et local à la pièce lol *)
+(* 3 repères : global en px, interne au tetris, et local à la pièce *)
 
 (* -------------------------- *)
 (* -------------------------- *)
