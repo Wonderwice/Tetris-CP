@@ -24,7 +24,6 @@ let mywait(x : float) : unit =
 
 type t_point = {x : int ; y : int} ;;
 
-
 (* ------------------------------------------------- *)
 (* ------------------------------------------------- *)
 (*    Types, formes, parametrage et initialisation   *)
@@ -100,7 +99,7 @@ let init_param() : t_param =
 let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
     set_color(col);
-    draw_rect(p.x * dilat, p.y * dilat, (base_draw.x * dilat),(base_draw.y * dilat));    
+    draw_rect( (p.x*dilat) + base_draw.x ,( p.y * dilat) + base_draw.y, p.x + 1 * dilat, p.y + 1 * dilat);
   )
 ;;
 
@@ -111,7 +110,7 @@ let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_colo
 let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
     set_color(col);
-    fill_rect((p.x * dilat) + 1, (p.y * dilat) + 1, (base_draw.x * dilat) - 2,(base_draw.y * dilat) - 2);
+    fill_rect((p.x * dilat) + base_draw.x + 1 , (p.y*dilat) + base_draw.y +1, (p.x + 1 * dilat) - 2,( p.y + 1 * dilat)-2);
   )
 ;;
 
@@ -125,8 +124,6 @@ let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_
     fill_absolute_pt(p, base_draw, dilat, col)
   )
 ;;
-
-(* open_graph(240,520) *)
 
 (** draw_relative_pt draws the outline of a square on the screen.
     The point p is defined relatively of base_point.
@@ -190,14 +187,30 @@ let drawfill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point 
     drawfill_relative_pt(nth(l,i),base_pt,base_draw,dilat,col)
   done;
 ;;
-                                                                                                               
+
+let draw_frame(base_draw, size_x, size_y, dilat : t_point * int * int * int) : unit =
+  draw_rect(base_draw.x, base_draw.y, size_x * dilat, size_y * dilat)
+;;
+
+let color_choice(t : t_color t_array) : t_color =
+  let rand_color : int = rand_int(0, t.len-1) in
+  t.value.(rand_color)
+;;
+
+let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int * int * t_color t_array) : t_cur_shape =
+  let rand_x : int = rand_int(0, mat_szx)
+  and rand_shape : int = rand_int(0, shapes.len -1)
+  and rand_color : int = rand_int(0, color_arr.len -1) in
+  {base = ref {x = rand_x; y = mat_szy}; shape = ref rand_shape; color = ref color_arr.value.(rand_color)}
+;;
+
 (* ----------------------------------------------- *)
 (* ----------------------------------------------- *)
 (*    Deplacements et controle des deplacements    *)
 (* ----------------------------------------------- *)
 (* ----------------------------------------------- *)
 
-(* choix des deplacements suivant le caractere saisi
+(* choix des deplacements suivant le caractere saisi *)
 let move(pl, dir : t_play * char) : bool = 
   (
   if dir = 't'
@@ -278,4 +291,3 @@ let jeuCP2() : unit =
       t := !new_t
     done
 ;;
- *)
