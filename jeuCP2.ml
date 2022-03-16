@@ -192,6 +192,103 @@ let draw_frame(base_draw, size_x, size_y, dilat : t_point * int * int * int) : u
   draw_rect(base_draw.x, base_draw.y, size_x * dilat, size_y * dilat)
 ;;
 
+(*-------------------------------*)
+(*     Fonction d'extraction     *)
+(*-------------------------------*)
+
+let getParam(play : t_play) : t_param =
+  play.par
+;;
+
+let getCurShape(play : t_play) : t_cur_shape =
+  play.cur_shape
+;;
+
+let getMat(play : t_play) : t_color matrix =
+  play.mat
+;;
+
+let getTime(prm : t_param) : t_param_time =
+  prm.time
+;;
+
+let getMat_szx(prm : t_param) : int =
+  prm.mat_szx
+;;
+
+
+let getMat_szy(prm : t_param) : int =
+  prm.mat_szy
+;;
+
+let getGraphics(prm : t_param) : t_param_graphics =
+  prm.graphics
+;;
+
+let getShapes(prm : t_param) : t_shape t_array =
+  prm.shapes
+;;
+
+let getInitTime(time : t_param_time) : float =
+  time.init
+;;
+
+let getExtent(time : t_param_time) : float =
+  time.extent
+;;
+
+let getRatio(time : t_param_time) : float =
+  time.ratio
+;;
+
+let getBase(graphics : t_param_graphics) : t_point =
+  graphics.base
+;;
+
+let getDilat(graphics : t_param_graphics) : int =
+  graphics.dilat
+;;
+
+let getColorArr(graphics : t_param_graphics) : t_color t_array =
+  graphics.color_arr
+;;
+
+let getShape(shape : t_shape) : t_point list =
+  shape.shape
+;;
+
+let getXLen(shape : t_shape) : int =
+  shape.x_len
+;;
+
+let getYLen(shape : t_shape) : int =
+  shape.Y_len
+;;
+
+let getRotRgtBase(shape : t_shape) : int =
+  shape.rot_rgt_base
+;;
+
+let getRotRgtShape(shape : t_shape) : int =
+  shape.rot_rgt_shape
+;;
+
+let getRotLftBase(shape : t_shape) : int =
+  shape.rot_lft_base
+;;
+
+let getRotLftBase(shape : t_shape) : int =
+  shape.rot_lft_base
+;;
+
+let getX(point : t_point) : int =
+  point.x
+;;
+
+let getY(point : t_point) : int =
+  point.y
+;;
+
 let color_choice(t : t_color t_array) : t_color =
   let rand_color : int = rand_int(0, t.len-1) in
   t.value.(rand_color)
@@ -203,6 +300,7 @@ let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int
   and rand_color : int = rand_int(0, color_arr.len -1) in
   {base = ref {x = rand_x; y = mat_szy}; shape = ref rand_shape; color = ref color_arr.value.(rand_color)}
 ;;
+
 
 (* ----------------------------------------------- *)
 (* ----------------------------------------------- *)
