@@ -1,4 +1,4 @@
-(** @author Loan Patris & Alexeï Czornyj & Styven Drui & Nicolas Moreau*)
+(** @author Loan Patris & Alexeï Czornyj & Styven Drui & Nicolas Moreau *)
 (* 3 repères : global en px, interne au tetris, et local à la pièce *)
 
 (* -------------------------- *)
@@ -111,7 +111,7 @@ let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_colo
     @param base_draw starting point of the work place
     @param dilat dilation (length of the square)
     @param col choosen color
-    @return a square of legnth dilat *)
+    @return a square of length dilat *)
 
 let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
@@ -134,37 +134,47 @@ let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_
   )
 ;;
 
-(** draw_relative_pt draws the outline of a square on the screen.
-    The point p is defined relatively of base_point.
-    p is used for the coordonates of a point in the place space,
-    base_point is the local origin point,
-    base_draw is the display space,
-    dilat is the dilation (lenght of the square),
-    col is the choosen color *)
-
-(** Draws the outline of a square  *)
+(** Draws the outline of a square
+    @param p starting point defined relatively of base_point
+    @param base_point local origin point
+    @param base_draw display space
+    @dilat dilation (length of the square)
+    @param col color of the outline
+    @return the outline of the square of length dilat *)
 
 let draw_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
     draw_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
 ;;
 
-(** ---mix---*)
+(** Draws a square
+    @param p starting point defined relatively of base_point
+    @param base_point local origin point
+    @param dilat dilation (length of the square)
+    @param col color of the square
+    @return the square of length dilat *)
 
 let fill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
    fill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
 ;;
 
-(** ---mix--- *)
+(** Draws a square fulled by the color square
+    @param p starting point defined relatively of base_point
+    @param base_draw starting local origin point
+    @param dilat dilation (length of the square)
+    @param col color of the square
+    @return the square and its outline of length dilat *)
 
 let drawfill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
    drawfill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
 ;;
 
-(** draw_pt_list is used to draw multiples squares which are referenced in the l t_point list,
-    base_point is the local origin point,
-    base_draw is the display space,
-    dilat is the dilation (lenght of the square),
-    col is the choosen color *)
+(** Draws the outlines of multiples squares wich are referenced in the l t_point list
+    @param l list of points
+    @param base_pt local origin point
+    @param base_draw display space
+    @param dilat dilation (length of the square)
+    @col color of the square
+    @return the outlines of multiples squares of length dilat *)
 
 let draw_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point* t_point * int * t_color) : unit =
   for i = 0 to (len(l)-1)
@@ -173,11 +183,13 @@ let draw_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point* t_p
   done;
 ;;
 
-(** fill_pt_list is used to draw multiples squares which are referenced in the l t_point list,
-    base_point is the local origin point,
-    base_draw is the display space,
-    dilat is the dilation (lenght of the square),
-    col is the choosen color *)                                                                                                
+(** Draws multiples full squares wich are referenced in the l t_point list
+    @param l list of points
+    @param base_pt local origin point
+    @param base_draw display space
+    @param dilat dilation (length of the square)
+    @col color of the square
+    @return multiples full squares of length dilat *)
 
 let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_point * int * t_color) : unit=
   for i = 0 to (len(l)-1)
@@ -186,11 +198,13 @@ let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_p
   done;
 ;;
 
-(** drawfill_pt_list is used to draw multiples fulled squares which are referenced in the l t_point list,
-    base_point is the local origin point,
-    base_draw is the display space,
-    dilat is the dilation (lenght of the square),
-    col is the choosen color *)
+(** Draws multiples full squares and their outlines wich are referenced in the l t_point list
+    @param l list of points
+    @param base_pt local origin point
+    @param base_draw display space
+    @param dilat dilation (length of the square)
+    @col color of the square
+    @return multiples full squares and their outlines of length dilat *)
 
 let drawfill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point * t_point * int * t_color) : unit=
   for i = 0 to (len(l)-1)
@@ -226,7 +240,6 @@ let getTime(prm : t_param) : t_param_time =
 let getMat_szx(prm : t_param) : int =
   prm.mat_szx
 ;;
-
 
 let getMat_szy(prm : t_param) : int =
   prm.mat_szy
