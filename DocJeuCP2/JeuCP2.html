@@ -263,27 +263,25 @@
 <pre><span id="VALinit_shapes"><span class="keyword">val</span> init_shapes</span> : <code class="type">unit -> <a href="JeuCP2.html#TYPEt_shape">t_shape</a> <a href="JeuCP2.html#TYPEt_array">t_array</a></code></pre>
 <pre><span id="VALinit_color"><span class="keyword">val</span> init_color</span> : <code class="type">unit -> CPutil.t_color <a href="JeuCP2.html#TYPEt_array">t_array</a></code></pre>
 <pre><span id="VALinit_param"><span class="keyword">val</span> init_param</span> : <code class="type">unit -> <a href="JeuCP2.html#TYPEt_param">t_param</a></code></pre><br>
-the draw_absolute_point draws the outline of the square, the parameters are :
-    p is the strating point of the square in the work space, dilat is the dilation
-    (lenght of the square), col is the choosen color<br>
+Draws the outline of the square.<br>
 
 <pre><span id="VALdraw_absolute_pt"><span class="keyword">val</span> draw_absolute_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -> unit</code></pre><br>
-the fill_absolute point draws a square, the parameters are :
-     p is the strating point of the square in the work space, dilat is the dilation
+the fill_absolute point draws a square, the parameters are :
+     p is the strating point of the square in the work space, dilat is the dilation
     (lenght of the square), col is the choosen color<br>
 
 <pre><span id="VALfill_absolute_pt"><span class="keyword">val</span> fill_absolute_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -> unit</code></pre><br>
-the drawfill_absolute_pt draws a square which is fulled by the col color square, the parameters are :
-     p is the strating point of the square in the work space, base_draw is the display space
+the drawfill_absolute_pt draws a square which is fulled by the col color square, the parameters are :
+     p is the strating point of the square in the work space, base_draw is the display space
      dilat is the dilation (lenght of the square)<br>
 
 <pre><span id="VALdrawfill_absolute_pt"><span class="keyword">val</span> drawfill_absolute_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -> unit</code></pre><br>
-draw_relative_pt draws the outline of a square on the screen.
-    The point p is defined relatively of base_point.
-    p is used for the coordonates of a point in the place space,
-    base_point is the local origin point,
-    base_draw is the display space,
-    dilat is the dilation (lenght of the square),
+draw_relative_pt draws the outline of a square on the screen.
+    The point p is defined relatively of base_point.
+    p is used for the coordonates of a point in the place space,
+    base_point is the local origin point,
+    base_draw is the display space,
+    dilat is the dilation (lenght of the square),
     col is the choosen color<br>
 
 <pre><span id="VALdraw_relative_pt"><span class="keyword">val</span> draw_relative_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
@@ -293,24 +291,50 @@ draw_relative_pt draws the outline of a square on the screen.
 ---mix---<br>
 
 <pre><span id="VALdrawfill_relative_pt"><span class="keyword">val</span> drawfill_relative_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
-draw_pt_list is used to draw multiples squares which are referenced in the l t_point list,
-    base_point is the local origin point,
-    base_draw is the display space,
-    dilat is the dilation (lenght of the square),
+draw_pt_list is used to draw multiples squares which are referenced in the l t_point list,
+    base_point is the local origin point,
+    base_draw is the display space,
+    dilat is the dilation (lenght of the square),
     col is the choosen color<br>
 
 <pre><span id="VALdraw_pt_list"><span class="keyword">val</span> draw_pt_list</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> list * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
-fill_pt_list is used to draw multiples squares which are referenced in the l t_point list,
-    base_point is the local origin point,
-    base_draw is the display space,
-    dilat is the dilation (lenght of the square),
+fill_pt_list is used to draw multiples squares which are referenced in the l t_point list,
+    base_point is the local origin point,
+    base_draw is the display space,
+    dilat is the dilation (lenght of the square),
     col is the choosen color<br>
 
 <pre><span id="VALfill_pt_list"><span class="keyword">val</span> fill_pt_list</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> list * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
-drawfill_pt_list is used to draw multiples fulled squares which are referenced in the l t_point list,
-    base_point is the local origin point,
-    base_draw is the display space,
-    dilat is the dilation (lenght of the square),
+drawfill_pt_list is used to draw multiples fulled squares which are referenced in the l t_point list,
+    base_point is the local origin point,
+    base_draw is the display space,
+    dilat is the dilation (lenght of the square),
     col is the choosen color<br>
 
-<pre><span id="VALdrawfill_pt_list"><span class="keyword">val</span> drawfill_pt_list</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> list * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre></body></html>
+<pre><span id="VALdrawfill_pt_list"><span class="keyword">val</span> drawfill_pt_list</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> list * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre>
+<pre><span id="VALdraw_frame"><span class="keyword">val</span> draw_frame</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * int * int * int -> unit</code></pre>
+<pre><span id="VALgetParam"><span class="keyword">val</span> getParam</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> <a href="JeuCP2.html#TYPEt_param">t_param</a></code></pre>
+<pre><span id="VALgetCurShape"><span class="keyword">val</span> getCurShape</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> <a href="JeuCP2.html#TYPEt_cur_shape">t_cur_shape</a></code></pre>
+<pre><span id="VALgetMat"><span class="keyword">val</span> getMat</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> CPutil.t_color CPutil.matrix</code></pre>
+<pre><span id="VALgetTime"><span class="keyword">val</span> getTime</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> <a href="JeuCP2.html#TYPEt_param_time">t_param_time</a></code></pre>
+<pre><span id="VALgetMat_szx"><span class="keyword">val</span> getMat_szx</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> int</code></pre>
+<pre><span id="VALgetMat_szy"><span class="keyword">val</span> getMat_szy</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> int</code></pre>
+<pre><span id="VALgetGraphics"><span class="keyword">val</span> getGraphics</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> <a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a></code></pre>
+<pre><span id="VALgetShapes"><span class="keyword">val</span> getShapes</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> <a href="JeuCP2.html#TYPEt_shape">t_shape</a> <a href="JeuCP2.html#TYPEt_array">t_array</a></code></pre>
+<pre><span id="VALgetInitTime"><span class="keyword">val</span> getInitTime</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_time">t_param_time</a> -> float</code></pre>
+<pre><span id="VALgetExtent"><span class="keyword">val</span> getExtent</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_time">t_param_time</a> -> float</code></pre>
+<pre><span id="VALgetRatio"><span class="keyword">val</span> getRatio</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_time">t_param_time</a> -> float</code></pre>
+<pre><span id="VALgetBase"><span class="keyword">val</span> getBase</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a> -> <a href="JeuCP2.html#TYPEt_point">t_point</a></code></pre>
+<pre><span id="VALgetDilat"><span class="keyword">val</span> getDilat</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a> -> int</code></pre>
+<pre><span id="VALgetColorArr"><span class="keyword">val</span> getColorArr</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a> -> CPutil.t_color <a href="JeuCP2.html#TYPEt_array">t_array</a></code></pre>
+<pre><span id="VALgetShape"><span class="keyword">val</span> getShape</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> <a href="JeuCP2.html#TYPEt_point">t_point</a> list</code></pre>
+<pre><span id="VALgetXLen"><span class="keyword">val</span> getXLen</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> int</code></pre>
+<pre><span id="VALgetYLen"><span class="keyword">val</span> getYLen</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> int</code></pre>
+<pre><span id="VALgetRotRgtBase"><span class="keyword">val</span> getRotRgtBase</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> <a href="JeuCP2.html#TYPEt_point">t_point</a></code></pre>
+<pre><span id="VALgetRotRgtShape"><span class="keyword">val</span> getRotRgtShape</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> int</code></pre>
+<pre><span id="VALgetRotLftBase"><span class="keyword">val</span> getRotLftBase</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> <a href="JeuCP2.html#TYPEt_point">t_point</a></code></pre>
+<pre><span id="VALgetRotLftShape"><span class="keyword">val</span> getRotLftShape</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> int</code></pre>
+<pre><span id="VALgetX"><span class="keyword">val</span> getX</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> -> int</code></pre>
+<pre><span id="VALgetY"><span class="keyword">val</span> getY</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> -> int</code></pre>
+<pre><span id="VALcolor_choice"><span class="keyword">val</span> color_choice</span> : <code class="type">CPutil.t_color <a href="JeuCP2.html#TYPEt_array">t_array</a> -> CPutil.t_color</code></pre>
+<pre><span id="VALcur_shape_choice"><span class="keyword">val</span> cur_shape_choice</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> <a href="JeuCP2.html#TYPEt_array">t_array</a> * int * int * CPutil.t_color <a href="JeuCP2.html#TYPEt_array">t_array</a> -><br>       <a href="JeuCP2.html#TYPEt_cur_shape">t_cur_shape</a></code></pre></body></html>

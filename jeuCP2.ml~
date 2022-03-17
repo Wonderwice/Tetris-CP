@@ -1,5 +1,5 @@
 (** @author Loan Patris & Alexeï Czornyj & Styven Drui & Nicolas Moreau*)
-(* 3 repères : global en px, interne au tetris, et local à la pièce  *)
+(* 3 repères : global en px, interne au tetris, et local à la pièce *)
 
 (* -------------------------- *)
 (* -------------------------- *)
@@ -24,13 +24,11 @@ let mywait(x : float) : unit =
 
 type t_point = {x : int ; y : int} ;;
 
-
 (* ------------------------------------------------- *)
 (* ------------------------------------------------- *)
 (*    Types, formes, parametrage et initialisation   *)
 (* ------------------------------------------------- *)
 (* ------------------------------------------------- *)
-
 
 (* Types *)
 
@@ -100,27 +98,32 @@ let init_param() : t_param =
 
 let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
-    open_graph(240,520);
-    set_color(black);
-    draw_rect(0,0,40,40);
-    set_color(grey);
-    fill_rect(1,1,38,38);    
+    set_color(col);
+    draw_rect( (p.x*dilat) + base_draw.x ,( p.y * dilat) + base_draw.y, p.x + 1 * dilat, p.y + 1 * dilat);
   )
 ;;
-
-draw_absolute_pt({x = 0; y = 0},{x = 0; y = 0}, 2, black);;
 
 (** the fill_absolute point draws a square, the parameters are :
      p is the strating point of the square in the work space, dilat is the dilation
     (lenght of the square), col is the choosen color *)
 
-let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit = ();;
+let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
+  (
+    set_color(col);
+    fill_rect((p.x * dilat) + base_draw.x + 1 , (p.y*dilat) + base_draw.y +1, (p.x + 1 * dilat) - 2,( p.y + 1 * dilat)-2);
+  )
+;;
 
 (** the drawfill_absolute_pt draws a square which is fulled by the col color square, the parameters are :
      p is the strating point of the square in the work space, base_draw is the display space
      dilat is the dilation (lenght of the square) *) 
 
-let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit = ();;
+let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
+  (
+    draw_absolute_pt(p, base_draw, dilat, black);
+    fill_absolute_pt(p, base_draw, dilat, col)
+  )
+;;
 
 (** draw_relative_pt draws the outline of a square on the screen.
     The point p is defined relatively of base_point.
@@ -130,15 +133,21 @@ let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_
     dilat is the dilation (lenght of the square),
     col is the choosen color *)
 
-let draw_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit = ();;
+let draw_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
+    draw_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
+;;
 
 (** ---mix---*)
 
-let fill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit = ();;
+let fill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
+   fill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
+;;
 
 (** ---mix--- *)
 
-let drawfill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit = ();;
+let drawfill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
+   drawfill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
+;;
 
 (** draw_pt_list is used to draw multiples squares which are referenced in the l t_point list,
     base_point is the local origin point,
@@ -146,7 +155,12 @@ let drawfill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_poin
     dilat is the dilation (lenght of the square),
     col is the choosen color *)
 
-let draw_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point* t_point * int * t_color) : unit = ();;
+let draw_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point* t_point * int * t_color) : unit =
+  for i = 0 to (len(l)-1)
+  do
+    draw_relative_pt(nth(l,i),base_pt,base_draw,dilat,col)
+  done;
+;;
 
 (** fill_pt_list is used to draw multiples squares which are referenced in the l t_point list,
     base_point is the local origin point,
@@ -154,7 +168,12 @@ let draw_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point* t_p
     dilat is the dilation (lenght of the square),
     col is the choosen color *)                                                                                                
 
-let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_point * int * t_color) : unit=();;
+let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_point * int * t_color) : unit=
+  for i = 0 to (len(l)-1)
+  do
+    fill_relative_pt(nth(l,i),base_pt,base_draw,dilat,col)
+  done;
+;;
 
 (** drawfill_pt_list is used to draw multiples fulled squares which are referenced in the l t_point list,
     base_point is the local origin point,
@@ -162,17 +181,134 @@ let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_p
     dilat is the dilation (lenght of the square),
     col is the choosen color *)
 
-let drawfill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point * t_point * int * t_color) : unit= ();;
+let drawfill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point * t_point * int * t_color) : unit=
+  for i = 0 to (len(l)-1)
+  do
+    drawfill_relative_pt(nth(l,i),base_pt,base_draw,dilat,col)
+  done;
+;;
+
+let draw_frame(base_draw, size_x, size_y, dilat : t_point * int * int * int) : unit =
+  draw_rect(base_draw.x, base_draw.y, size_x * dilat, size_y * dilat)
+;;
+
+(*-------------------------------*)
+(*     Fonction d'extraction     *)
+(*-------------------------------*)
+
+let getParam(play : t_play) : t_param =
+  play.par
+;;
+
+let getCurShape(play : t_play) : t_cur_shape =
+  play.cur_shape
+;;
+
+let getMat(play : t_play) : t_color matrix =
+  play.mat
+;;
+
+let getTime(prm : t_param) : t_param_time =
+  prm.time
+;;
+
+let getMat_szx(prm : t_param) : int =
+  prm.mat_szx
+;;
 
 
-                                                                                                               
+let getMat_szy(prm : t_param) : int =
+  prm.mat_szy
+;;
+
+let getGraphics(prm : t_param) : t_param_graphics =
+  prm.graphics
+;;
+
+let getShapes(prm : t_param) : t_shape t_array =
+  prm.shapes
+;;
+
+let getInitTime(time : t_param_time) : float =
+  time.init
+;;
+
+let getExtent(time : t_param_time) : float =
+  time.extent
+;;
+
+let getRatio(time : t_param_time) : float =
+  time.ratio
+;;
+
+let getBase(graphics : t_param_graphics) : t_point =
+  graphics.base
+;;
+
+let getDilat(graphics : t_param_graphics) : int =
+  graphics.dilat
+;;
+
+let getColorArr(graphics : t_param_graphics) : t_color t_array =
+  graphics.color_arr
+;;
+
+let getShape(shape : t_shape) : t_point list =
+  shape.shape
+;;
+
+let getXLen(shape : t_shape) : int =
+  shape.x_len
+;;
+
+let getYLen(shape : t_shape) : int =
+  shape.Y_len
+;;
+
+let getRotRgtBase(shape : t_shape) : int =
+  shape.rot_rgt_base
+;;
+
+let getRotRgtShape(shape : t_shape) : int =
+  shape.rot_rgt_shape
+;;
+
+let getRotLftBase(shape : t_shape) : int =
+  shape.rot_lft_base
+;;
+
+let getRotLftBase(shape : t_shape) : int =
+  shape.rot_lft_base
+;;
+
+let getX(point : t_point) : int =
+  point.x
+;;
+
+let getY(point : t_point) : int =
+  point.y
+;;
+
+let color_choice(t : t_color t_array) : t_color =
+  let rand_color : int = rand_int(0, t.len-1) in
+  t.value.(rand_color)
+;;
+
+let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int * int * t_color t_array) : t_cur_shape =
+  let rand_x : int = rand_int(0, mat_szx)
+  and rand_shape : int = rand_int(0, shapes.len -1)
+  and rand_color : int = rand_int(0, color_arr.len -1) in
+  {base = ref {x = rand_x; y = mat_szy}; shape = ref rand_shape; color = ref color_arr.value.(rand_color)}
+;;
+
+
 (* ----------------------------------------------- *)
 (* ----------------------------------------------- *)
 (*    Deplacements et controle des deplacements    *)
 (* ----------------------------------------------- *)
 (* ----------------------------------------------- *)
 
-(* choix des deplacements suivant le caractere saisi
+(* choix des deplacements suivant le caractere saisi *)
 let move(pl, dir : t_play * char) : bool = 
   (
   if dir = 't'
@@ -253,4 +389,3 @@ let jeuCP2() : unit =
       t := !new_t
     done
 ;;
- *)

@@ -1,12 +1,12 @@
 (** @author Loan Patris & Alexeï Czornyj & Styven Drui & Nicolas Moreau*)
 (* 3 repères : global en px, interne au tetris, et local à la pièce *)
+open CPutil ;;
 
 (* -------------------------- *)
 (* -------------------------- *)
 (*    fonctions utilitaires   *)
 (* -------------------------- *)
 (* -------------------------- *) 
-
 
 let mywait(x : float) : unit =
   let y : float ref = ref (Sys.time()) in
@@ -92,9 +92,13 @@ let init_param() : t_param =
     }
 ;;
 
-(** the draw_absolute_point draws the outline of the square, the parameters are :
-    p is the strating point of the square in the work space, dilat is the dilation
-    (lenght of the square), col is the choosen color *)
+(** Draws the outline of the square.
+    @param p starting point of the square in the work place
+    @param base_draw starting point of the work place
+    @param dilat dilation (length of the square)
+    @param col choosen color
+    @return the empty square of length dilat
+    @author Loan *)
 
 let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
@@ -103,9 +107,12 @@ let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_colo
   )
 ;;
 
-(** the fill_absolute point draws a square, the parameters are :
-     p is the strating point of the square in the work space, dilat is the dilation
-    (lenght of the square), col is the choosen color *)
+(** Draws a square
+    @param p starting point of the square in the work place
+    @param base_draw starting point of the work place
+    @param dilat dilation (length of the square)
+    @param col choosen color
+    @return a square of legnth dilat *)
 
 let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
@@ -114,9 +121,12 @@ let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_colo
   )
 ;;
 
-(** the drawfill_absolute_pt draws a square which is fulled by the col color square, the parameters are :
-     p is the strating point of the square in the work space, base_draw is the display space
-     dilat is the dilation (lenght of the square) *) 
+(** Draws a square fulled by the color square
+    @param p starting point of the square in the work place
+    @param base_draw starting point of the work place
+    @param dilat dilation (length of the square)
+    @param col choosen color
+    @return a square and its outline *) 
 
 let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
@@ -132,6 +142,8 @@ let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_
     base_draw is the display space,
     dilat is the dilation (lenght of the square),
     col is the choosen color *)
+
+(** Draws the outline of a square  *)
 
 let draw_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
     draw_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
@@ -262,10 +274,10 @@ let getXLen(shape : t_shape) : int =
 ;;
 
 let getYLen(shape : t_shape) : int =
-  shape.Y_len
+  shape.y_len
 ;;
 
-let getRotRgtBase(shape : t_shape) : int =
+let getRotRgtBase(shape : t_shape) : t_point  =
   shape.rot_rgt_base
 ;;
 
@@ -273,12 +285,12 @@ let getRotRgtShape(shape : t_shape) : int =
   shape.rot_rgt_shape
 ;;
 
-let getRotLftBase(shape : t_shape) : int =
+let getRotLftBase(shape : t_shape) : t_point =
   shape.rot_lft_base
 ;;
 
-let getRotLftBase(shape : t_shape) : int =
-  shape.rot_lft_base
+let getRotLftShape(shape : t_shape) : int =
+  shape.rot_lft_shape
 ;;
 
 let getX(point : t_point) : int =
@@ -301,7 +313,7 @@ let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int
   {base = ref {x = rand_x; y = mat_szy}; shape = ref rand_shape; color = ref color_arr.value.(rand_color)}
 ;;
 
-
+(*
 (* ----------------------------------------------- *)
 (* ----------------------------------------------- *)
 (*    Deplacements et controle des deplacements    *)
@@ -389,3 +401,4 @@ let jeuCP2() : unit =
       t := !new_t
     done
 ;;
+*)
