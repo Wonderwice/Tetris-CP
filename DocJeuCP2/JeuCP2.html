@@ -262,54 +262,38 @@
 <pre><span id="VALinit_sh211"><span class="keyword">val</span> init_sh211</span> : <code class="type">unit -> <a href="JeuCP2.html#TYPEt_shape">t_shape</a></code></pre>
 <pre><span id="VALinit_shapes"><span class="keyword">val</span> init_shapes</span> : <code class="type">unit -> <a href="JeuCP2.html#TYPEt_shape">t_shape</a> <a href="JeuCP2.html#TYPEt_array">t_array</a></code></pre>
 <pre><span id="VALinit_color"><span class="keyword">val</span> init_color</span> : <code class="type">unit -> CPutil.t_color <a href="JeuCP2.html#TYPEt_array">t_array</a></code></pre>
-<pre><span id="VALinit_param"><span class="keyword">val</span> init_param</span> : <code class="type">unit -> <a href="JeuCP2.html#TYPEt_param">t_param</a></code></pre><br>
-Draws the outline of the square.<br>
+<pre><span id="VALinit_param"><span class="keyword">val</span> init_param</span> : <code class="type">unit -> <a href="JeuCP2.html#TYPEt_param">t_param</a></code></pre>
+<pre><span id="VALinit_play"><span class="keyword">val</span> init_play</span> : <code class="type">unit -> <a href="JeuCP2.html#TYPEt_play">t_play</a></code></pre><br>
+Draws the outline of the square.
+    <code class="code">p</code> starting point of the square in the work place
+    <code class="code">base_draw</code> starting point of the work place
+    <code class="code">dilat</code> dilation (length of the square)
+    <code class="code">col</code> choosen color
+    author Loan<br>
 
 <pre><span id="VALdraw_absolute_pt"><span class="keyword">val</span> draw_absolute_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -> unit</code></pre><br>
-the fill_absolute point draws a square, the parameters are :
-     p is the strating point of the square in the work space, dilat is the dilation
-    (lenght of the square), col is the choosen color<br>
+Draws a square<br>
 
 <pre><span id="VALfill_absolute_pt"><span class="keyword">val</span> fill_absolute_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -> unit</code></pre><br>
-the drawfill_absolute_pt draws a square which is fulled by the col color square, the parameters are :
-     p is the strating point of the square in the work space, base_draw is the display space
-     dilat is the dilation (lenght of the square)<br>
+Draws a square fulled by the color square<br>
 
 <pre><span id="VALdrawfill_absolute_pt"><span class="keyword">val</span> drawfill_absolute_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -> unit</code></pre><br>
-draw_relative_pt draws the outline of a square on the screen.
-    The point p is defined relatively of base_point.
-    p is used for the coordonates of a point in the place space,
-    base_point is the local origin point,
-    base_draw is the display space,
-    dilat is the dilation (lenght of the square),
-    col is the choosen color<br>
+Draws the outline of a square<br>
 
 <pre><span id="VALdraw_relative_pt"><span class="keyword">val</span> draw_relative_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
----mix---<br>
+Draws a square<br>
 
 <pre><span id="VALfill_relative_pt"><span class="keyword">val</span> fill_relative_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
----mix---<br>
+Draws a square fulled by the color square<br>
 
 <pre><span id="VALdrawfill_relative_pt"><span class="keyword">val</span> drawfill_relative_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
-draw_pt_list is used to draw multiples squares which are referenced in the l t_point list,
-    base_point is the local origin point,
-    base_draw is the display space,
-    dilat is the dilation (lenght of the square),
-    col is the choosen color<br>
+Draws the outlines of multiples squares wich are referenced in the l t_point list<br>
 
 <pre><span id="VALdraw_pt_list"><span class="keyword">val</span> draw_pt_list</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> list * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
-fill_pt_list is used to draw multiples squares which are referenced in the l t_point list,
-    base_point is the local origin point,
-    base_draw is the display space,
-    dilat is the dilation (lenght of the square),
-    col is the choosen color<br>
+Draws multiples full squares wich are referenced in the l t_point list<br>
 
 <pre><span id="VALfill_pt_list"><span class="keyword">val</span> fill_pt_list</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> list * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
-drawfill_pt_list is used to draw multiples fulled squares which are referenced in the l t_point list,
-    base_point is the local origin point,
-    base_draw is the display space,
-    dilat is the dilation (lenght of the square),
-    col is the choosen color<br>
+Draws multiples full squares and their outlines wich are referenced in the l t_point list<br>
 
 <pre><span id="VALdrawfill_pt_list"><span class="keyword">val</span> drawfill_pt_list</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> list * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre>
 <pre><span id="VALdraw_frame"><span class="keyword">val</span> draw_frame</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * int * int * int -> unit</code></pre>
