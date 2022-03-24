@@ -1,5 +1,5 @@
-(** @author Loan Patris & Alexeï Czornyj & Styven Drui & Nicolas Moreau *)
-(* 3 repères : global en px, interne au tetris, et local à la pièce *)
+(** @author Loan Patris & AlexeÃ¯ Czornyj & Styven Drui & Nicolas Moreau *)
+(* 3 repÃ¨res : global en px, interne au tetris, et local Ã  la piÃ¨ce *)
 
 (* -------------------------- *)
 (* -------------------------- *)
@@ -367,7 +367,8 @@ let move(pl, dir : t_play * char) : bool =
   )
 ;;
 
-let valid_matrix_point(p, param : t_point * t_param ) : bool = 
+let valid_matrix_point(p, param : t_point * t_param ) : bool =
+  (x
 
 (* ----------------------------------- *)
 (* ----------------------------------- *)
