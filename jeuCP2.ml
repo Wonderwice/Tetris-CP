@@ -367,7 +367,9 @@ let move(pl, dir : t_play * char) : bool =
   )
 ;;
 
-let valid_matrix_point(p, param : t_point * t_param ) : bool = 
+let valid_matrix_point(p, param : t_point * t_param ) : bool =
+  (x >= 0 && x <= mat_szx - 1) && (y >= 0 && y <= mat_szy -1)
+;;
 
 (* ----------------------------------- *)
 (* ----------------------------------- *)
@@ -381,6 +383,8 @@ let valid_matrix_point(p, param : t_point * t_param ) : bool =
 (*   Une etape de jeu    *)
 (* --------------------- *)
 (* --------------------- *)
+
+
 
 let newstep(pl, new_t, t, dt : t_play * float ref * float * float) : bool = 
   let the_end : bool ref = ref (!new_t -. t > dt) and dec : bool ref = ref false in
