@@ -272,28 +272,64 @@ Draws the outline of the square.
     author Loan<br>
 
 <pre><span id="VALdraw_absolute_pt"><span class="keyword">val</span> draw_absolute_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -> unit</code></pre><br>
-Draws a square<br>
+Draws a square 
+    <code class="code">p</code> starting point of the square in the work place
+    <code class="code">base_draw</code> starting point of the work place
+    <code class="code">dilat</code> dilation (length of the square)
+    <code class="code">col</code> choosen color<br>
 
 <pre><span id="VALfill_absolute_pt"><span class="keyword">val</span> fill_absolute_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -> unit</code></pre><br>
-Draws a square fulled by the color square<br>
+Draws a square fulled by the color square
+    <code class="code">p</code> starting point of the square in the work place
+    <code class="code">base_draw</code> starting point of the work place
+    <code class="code">dilat</code> dilation (length of the square)
+    <code class="code">col</code> choosen color<br>
 
 <pre><span id="VALdrawfill_absolute_pt"><span class="keyword">val</span> drawfill_absolute_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -> unit</code></pre><br>
-Draws the outline of a square<br>
+Draws the outline of a square
+    <code class="code">p</code> starting point defined relatively of base_point
+    <code class="code">base_point</code> local origin point
+    <code class="code">base_draw</code> display space
+    <code class="code">dilation</code> (length of the square)
+    <code class="code">col</code> color of the outline<br>
 
 <pre><span id="VALdraw_relative_pt"><span class="keyword">val</span> draw_relative_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
-Draws a square<br>
+Draws a square
+    <code class="code">p</code> starting point defined relatively of base_point
+    <code class="code">base_point</code> local origin point
+    <code class="code">dilat</code> dilation (length of the square)
+    <code class="code">col</code> color of the square<br>
 
 <pre><span id="VALfill_relative_pt"><span class="keyword">val</span> fill_relative_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
-Draws a square fulled by the color square<br>
+Draws a square fulled by the color square
+    <code class="code">p</code> starting point defined relatively of base_point
+    <code class="code">base_draw</code> starting local origin point
+    <code class="code">dilat</code> dilation (length of the square)
+    <code class="code">col</code> color of the square<br>
 
 <pre><span id="VALdrawfill_relative_pt"><span class="keyword">val</span> drawfill_relative_pt</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
-Draws the outlines of multiples squares wich are referenced in the l t_point list<br>
+Draws the outlines of multiples squares wich are referenced in the l t_point list
+    <code class="code">l</code> list of points
+    <code class="code">base_pt</code> local origin point
+    <code class="code">base_draw</code> display space
+    <code class="code">dilat</code> dilation (length of the square)
+    <code class="code">col</code> color of the square<br>
 
 <pre><span id="VALdraw_pt_list"><span class="keyword">val</span> draw_pt_list</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> list * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
-Draws multiples full squares wich are referenced in the l t_point list<br>
+Draws multiples full squares wich are referenced in the l t_point list
+    <code class="code">l</code> list of points
+    <code class="code">base_pt</code> local origin point
+    <code class="code">base_draw</code> display space
+    <code class="code">dilat</code> dilation (length of the square)
+    <code class="code">col</code> color of the square<br>
 
 <pre><span id="VALfill_pt_list"><span class="keyword">val</span> fill_pt_list</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> list * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre><br>
-Draws multiples full squares and their outlines wich are referenced in the l t_point list<br>
+Draws multiples full squares and their outlines wich are referenced in the l t_point list
+    <code class="code">l</code> list of points
+    <code class="code">base_pt</code> local origin point
+    <code class="code">base_draw</code> display space
+    <code class="code">dilat</code> dilation (length of the square)
+    <code class="code">col</code> color of the square<br>
 
 <pre><span id="VALdrawfill_pt_list"><span class="keyword">val</span> drawfill_pt_list</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> list * <a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> * int * CPutil.t_color -><br>       unit</code></pre>
 <pre><span id="VALdraw_frame"><span class="keyword">val</span> draw_frame</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * int * int * int -> unit</code></pre>

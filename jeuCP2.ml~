@@ -1,6 +1,8 @@
 (** @author Loan Patris & Alexeï Czornyj & Styven Drui & Nicolas Moreau *)
 (* 3 repères : global en px, interne au tetris, et local à la pièce *)
 
+open CPutil;;
+
 (* -------------------------- *)
 (* -------------------------- *)
 (*    fonctions utilitaires   *)
@@ -92,28 +94,25 @@ let init_param() : t_param =
 ;;
 
 let init_play() : t_play =
+  let prm : t_param = init_param() in
   {
-    par = { time = {init = 1.0 ; extent = 10.0 ; ratio = 0.8} ;
-            mat_szx = 15 ; mat_szy = 28 ;
-            graphics = {base = {x = 50 ; y = 50} ; dilat = 20 ; color_arr = init_color()} ;
-            shape = [{x = 0 ; y = 0} ; {x = 0 ; y = -1} ; {x = 0 ; y = -2} ; {x = 0 ; y = -3}] ; 
-  x_len = 1 ; y_len = 4 ; 
-  rot_rgt_base = {x = -2 ;  y = -1} ; rot_rgt_shape = 0 ; 
-  rot_lft_base = {x = -1 ; y = -1} ; rot_lft_shape = 0}
-          }
-    cur_shape = { base = { x = ref 0 ; y = ref 0 } ; shape = ref 0 ; color = ref yellow } ;
-    mat = grey
+    par = prm;
+    cur_shape = {base = ref {x = 9; y = 20}; shape = ref 0; color = ref blue};
+    mat =
+      [|
+        [|blue;red|];
+        [|blue; red|]
+      |]
   }
 ;;
 
 
 (** Draws the outline of the square.
-    @param p starting point of the square in the work place
-    @param base_draw starting point of the work place
-    @param dilat dilation (length of the square)
-    @param col choosen color
-    @return the empty square of length dilat
-    @author Loan *)
+    [p] starting point of the square in the work place
+    [base_draw] starting point of the work place
+    [dilat] dilation (length of the square)
+    [col] choosen color
+    author Loan *)
 
 let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
@@ -122,12 +121,7 @@ let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_colo
   )
 ;;
 
-(** Draws a square
-    @param p starting point of the square in the work place
-    @param base_draw starting point of the work place
-    @param dilat dilation (length of the square)
-    @param col choosen color
-    @return a square of length dilat *)
+(** Draws a square @param p starting point of the square in the work place @param base_draw starting point of the work place @param dilat dilation (length of the square) @param col choosen color @return a square of length dilat *)
 
 let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
@@ -348,7 +342,7 @@ let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int
 (* ----------------------------------------------- *)
 (* ----------------------------------------------- *)
 
-(* choix des deplacements suivant le caractere saisi *)
+(* choix des deplacements suivant le caractere saisi
 let move(pl, dir : t_play * char) : bool = 
   (
   if dir = 't'
@@ -435,4 +429,4 @@ let jeuCP2() : unit =
       t := !new_t
     done
 ;;
-*)
+ *)
