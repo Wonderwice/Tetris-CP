@@ -367,6 +367,17 @@ let rec is_free_move(p, shape, mymat,param :t_point * t_point list * t_color mat
        else false
 ;;
 
+let is_column_full(mymat, y, mat_szx : t_color matrix * int * int) : bool =
+  let is_full : bool ref = ref true in
+  for i = 0 to mat_szx - 1
+  do
+   if mymat.(y).(i) = white
+   then is_full := false
+  done;
+  !is_full
+;;
+
+
 (*
 let move(pl, dir : t_play * char) : bool = 
   (
