@@ -326,12 +326,26 @@ let color_choice(t : t_color t_array) : t_color =
 ;;
 
 let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int * int * t_color t_array) : t_cur_shape =
-  let rand_x : int = rand_int(0, mat_szx)
-  and rand_shape : int = rand_int(0, shapes.len -1)
+  let rand_shape : int = rand_int(0, shapes.len - 1) in
+  let rand_x : int = rand_int(0, mat_szx - shapes.value.(rand_shape).x_len)
   and rand_color : int = rand_int(0, color_arr.len -1) in
   {base = ref {x = rand_x; y = mat_szy}; shape = ref rand_shape; color = ref color_arr.value.(rand_color)}
 ;;
 
+let rec insert(cur, shape, param, mymat : t_cur_shape * t_point list * t_param * t_color matrix) : bool=
+  let my_point : t_point = fst(shape) in
+  if isempty(shape)
+  then true
+  else
+    if mymat.(!(cur.base).y + my_point.y).(!(cur.base).x + my_point.x) = white
+    then
+    (
+      mymat.(!(cur.base).y + my_point.y).(!(cur.base).x + my_point.x) <- !(cur.color);
+      insert(cur, rem_fst(shape), param, mymat)
+    )
+    else
+      false
+;;
 
 (* ----------------------------------------------- *)
 (* ----------------------------------------------- *)
@@ -341,6 +355,19 @@ let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int
 
 (* choix des deplacements suivant le caractere saisi*)
 
+let valid_matrix_point(p, param : t_point * t_param ) : bool =
+  (p.x >= 0 && p.x <= param.mat_szx - 1) && (p.y >= 0 && p.y <= param.mat_szy -1)
+;;
+
+let rec is_free_move(p, shape, mymat,param :t_point * t_point list * t_color matrix * t_param) : bool =
+  if isempty(shape)
+  then true
+  else if  valid_matrix_point({x = p.x + fst(shape).x; y = p.y + fst(shape).y}, param)
+       then  is_free_move(p, rem_fst(shape), mymat, param)
+       else false
+;;
+
+(*
 let move(pl, dir : t_play * char) : bool = 
   (
   if dir = 't'
@@ -358,14 +385,7 @@ let move(pl, dir : t_play * char) : bool =
   (dir = 'v')
   )
 ;;
-
-let valid_matrix_point(p, param : t_point * t_param ) : bool =
-  (x >= 0 && x <= mat_szx - 1) && (y >= 0 && y <= mat_szy -1)
-;;
-
-let rec is_free_move(p, shape, mymat,param :t_point * t_point list * t_color matrix * t_param) : bool =
-  valid_matrix_point( p
-
+                 
 (* ----------------------------------- *)
 (* ----------------------------------- *)
 (*    Suppression des lignes pleines   *)
@@ -429,4 +449,4 @@ let jeuCP2() : unit =
       t := !new_t
     done
 ;;
- *)
+*)
