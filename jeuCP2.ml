@@ -377,6 +377,21 @@ let is_column_full(mymat, y, mat_szx : t_color matrix * int * int) : bool =
   !is_full
 ;;
 
+let decal(mymat, y, szx, szy, par : t_color matrix * int * int * int * t_param) : unit =
+  for i = 0 to szy
+  do
+    if i > y
+    then mymat.(i - 1) <- mymat.(i)
+  done
+;;
+
+let clear_play(pl : t_play) : unit =
+  for i = 0 to pl.par.mat_szy
+  do
+    if is_column_full(pl.mat, i, pl.par.mat_szx)
+    then decal(pl.mat, i, pl.par.mat_szx, pl.par.mat_szy, pl.par)
+  done
+;;
 
 (*
 let move(pl, dir : t_play * char) : bool = 
