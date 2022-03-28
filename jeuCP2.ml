@@ -339,7 +339,8 @@ let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int
 (* ----------------------------------------------- *)
 (* ----------------------------------------------- *)
 
-(* choix des deplacements suivant le caractere saisi
+(* choix des deplacements suivant le caractere saisi*)
+
 let move(pl, dir : t_play * char) : bool = 
   (
   if dir = 't'
@@ -362,6 +363,9 @@ let valid_matrix_point(p, param : t_point * t_param ) : bool =
   (x >= 0 && x <= mat_szx - 1) && (y >= 0 && y <= mat_szy -1)
 ;;
 
+let rec is_free_move(p, shape, mymat,param :t_point * t_point list * t_color matrix * t_param) : bool =
+  valid_matrix_point( p
+
 (* ----------------------------------- *)
 (* ----------------------------------- *)
 (*    Suppression des lignes pleines   *)
@@ -374,7 +378,6 @@ let valid_matrix_point(p, param : t_point * t_param ) : bool =
 (*   Une etape de jeu    *)
 (* --------------------- *)
 (* --------------------- *)
-
 
 
 let newstep(pl, new_t, t, dt : t_play * float ref * float * float) : bool = 
