@@ -1,7 +1,4 @@
 (** @author Loan Patris & Alexeï Czornyj & Styven Drui & Nicolas Moreau *)
-(* 3 repères : global en px, interne au tetris, et local à la pièce *)
-
-open CPutil;;
 
 (* -------------------------- *)
 (* -------------------------- *)
@@ -92,20 +89,6 @@ let init_param() : t_param =
     shapes = init_shapes()
     }
 ;;
-
-let init_play() : t_play =
-  let prm : t_param = init_param() in
-  {
-    par = prm;
-    cur_shape = {base = ref {x = 9; y = 20}; shape = ref 0; color = ref blue};
-    mat =
-      [|
-        [|blue;red|];
-        [|blue; red|]
-      |]
-  }
-;;
-
 
 (** Draws the outline of the square.
     [p] starting point of the square in the work place
@@ -328,23 +311,39 @@ let color_choice(t : t_color t_array) : t_color =
 let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int * int * t_color t_array) : t_cur_shape =
   let rand_shape : int = rand_int(0, shapes.len - 1) in
   let rand_x : int = rand_int(0, mat_szx - shapes.value.(rand_shape).x_len)
+  and y : int = mat_szy - shapes.value.(rand_shape).y_len
   and rand_color : int = rand_int(0, color_arr.len -1) in
-  {base = ref {x = rand_x; y = mat_szy}; shape = ref rand_shape; color = ref color_arr.value.(rand_color)}
+  {base = ref {x = rand_x; y = y}; shape = ref rand_shape; color = ref color_arr.value.(rand_color)}
 ;;
 
 let rec insert(cur, shape, param, mymat : t_cur_shape * t_point list * t_param * t_color matrix) : bool=
-  let my_point : t_point = fst(shape) in
   if isempty(shape)
   then true
   else
-    if mymat.(!(cur.base).y + my_point.y).(!(cur.base).x + my_point.x) = white
+    let my_point : t_point = fst(shape) in
+    if mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) = white
     then
     (
-      mymat.(!(cur.base).y + my_point.y).(!(cur.base).x + my_point.x) <- !(cur.color);
+      mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) <- !(cur.color);
       insert(cur, rem_fst(shape), param, mymat)
     )
     else
       false
+;;
+
+let init_play() : t_play =
+    let prm : t_param = init_param() in
+    let play : t_play = { par = prm; cur_shape = cur_shape_choice( prm.shapes,prm.mat_szx, prm.mat_szy, prm.graphics.color_arr); mat = mat_make(prm.mat_szy, prm.mat_szx, white)}
+    in
+    (
+    if insert(play.cur_shape, play.par.shapes.value.(!(play.cur_shape.shape)).shape, play.par, play.mat)
+    then
+      (
+        draw_frame(play.par.graphics.base, play.par.mat_szx, play.par.mat_szy, play.par.graphics.dilat);
+        drawfill_pt_list(play.par.shapes.value.(!(play.cur_shape.shape)).shape, !(play.cur_shape.base), play.par.graphics.base, play.par.graphics.dilat, !(play.cur_shape.color));
+      );
+    play
+    )
 ;;
 
 (* ----------------------------------------------- *)
@@ -360,12 +359,61 @@ let valid_matrix_point(p, param : t_point * t_param ) : bool =
 ;;
 
 let rec is_free_move(p, shape, mymat,param :t_point * t_point list * t_color matrix * t_param) : bool =
+  let temp_point : t_point = fst(shape) in
   if isempty(shape)
   then true
-  else if  valid_matrix_point({x = p.x + fst(shape).x; y = p.y + fst(shape).y}, param)
+  else if  valid_matrix_point({x = p.x + temp_point.x; y = p.y + temp_point.y}, param)
        then  is_free_move(p, rem_fst(shape), mymat, param)
        else false
 ;;
+
+let move_left(pl : t_play) : unit =
+  ()
+;;
+
+let move_right(pl : t_play) : unit =
+  ()
+;;
+
+let move_down(pl : t_play) : bool =
+  true
+;;
+
+let rotate_right(pl : t_play) : unit =
+  ()
+;;
+
+let rotate_left(pl : t_play) : unit =
+  ()
+;;
+
+let move_at_bottom(pl : t_play) : unit =
+  ()
+;;
+
+let move(pl, dir : t_play * char) : bool = 
+  (
+  if dir = 't'
+    then rotate_right(pl)
+    else
+      if dir = 'c'
+      then rotate_left(pl)
+      else
+        if dir = 'd'
+        then move_left(pl)
+        else
+          if dir = 'h'
+          then move_right(pl)
+          else () ;  
+  (dir = 'v')
+  )
+;;
+                 
+(* ----------------------------------- *)
+(* ----------------------------------- *)
+(*    Suppression des lignes pleines   *)
+(* ----------------------------------- *)
+(* ----------------------------------- *)
 
 let is_column_full(mymat, y, mat_szx : t_color matrix * int * int) : bool =
   let is_full : bool ref = ref true in
@@ -393,31 +441,24 @@ let clear_play(pl : t_play) : unit =
   done
 ;;
 
-(*
-let move(pl, dir : t_play * char) : bool = 
-  (
-  if dir = 't'
-    then rotate_right(pl)
-    else
-      if dir = 'c'
-      then rotate_left(pl)
-      else
-        if dir = 'd'
-        then move_left(pl)
-        else
-          if dir = 'h'
-          then move_right(pl)
-          else () ;  
-  (dir = 'v')
-  )
+let final_insert(pl : t_play) : bool =
+  insert(pl.cur_shape,pl.par.shapes.value.(!(pl.cur_shape.shape)).shape, pl.par, pl.mat)
 ;;
-                 
-(* ----------------------------------- *)
-(* ----------------------------------- *)
-(*    Suppression des lignes pleines   *)
-(* ----------------------------------- *)
-(* ----------------------------------- *)
 
+let final_newstep(pl : t_play) : bool =
+  let new_cur_shape : t_cur_shape = cur_shape_choice(pl.par.shapes, pl.par.mat_szx, pl.par.mat_szy, pl.par.graphics.color_arr) in
+  if is_free_move(!(pl.cur_shape.base),pl.par.shapes.value.(!(pl.cur_shape.shape)).shape,pl.mat, pl.par)
+  then true
+  else
+    (
+      final_insert(pl);
+      clear_play(pl);
+      pl.cur_shape.base := !(new_cur_shape.base);
+      pl.cur_shape.shape := !(new_cur_shape.shape);
+      pl.cur_shape.color := !(new_cur_shape.color);
+      false
+    )
+;;
 
 (* --------------------- *)
 (* --------------------- *)
@@ -460,19 +501,18 @@ let newstep(pl, new_t, t, dt : t_play * float ref * float * float) : bool =
 let jeuCP2() : unit =
   let pl : t_play = init_play() in
   let t : float ref = ref (Sys.time()) and new_t : float ref = ref (Sys.time()) in
-  let dt : float ref = ref (time_init(pl.par)) and t_acc : float ref = ref (Sys.time()) in
+  let dt : float ref = ref (pl.par.time.init) and t_acc : float ref = ref (Sys.time()) in
   let the_end : bool ref = ref false in
     while not(!the_end)
     do
       the_end := newstep(pl, new_t, !t, !dt) ; 
-      if ((!new_t -. !t_acc) > time_extent(pl.par))
+      if ((!new_t -. !t_acc) > pl.par.time.extent)
       then 
         (
-        dt := !dt *. time_ratio(pl.par) ; 
+        dt := !dt *. pl.par.time.ratio; 
         t_acc := !new_t
         ) 
       else () ;
       t := !new_t
     done
 ;;
-*)
