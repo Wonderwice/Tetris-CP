@@ -1,7 +1,4 @@
 (** @author Loan Patris & Alexeï Czornyj & Styven Drui & Nicolas Moreau *)
-(* 3 repères : global en px, interne au tetris, et local à la pièce *)
-
-open CPutil;;
 
 (* -------------------------- *)
 (* -------------------------- *)
@@ -93,20 +90,6 @@ let init_param() : t_param =
     }
 ;;
 
-let init_play() : t_play =
-  let prm : t_param = init_param() in
-  {
-    par = prm;
-    cur_shape = {base = ref {x = 9; y = 20}; shape = ref 0; color = ref blue};
-    mat =
-      [|
-        [|blue;red|];
-        [|blue; red|]
-      |]
-  }
-;;
-
-
 (** Draws the outline of the square.
     [p] starting point of the square in the work place
     [base_draw] starting point of the work place
@@ -121,7 +104,11 @@ let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_colo
   )
 ;;
 
-(** Draws a square @param p starting point of the square in the work place @param base_draw starting point of the work place @param dilat dilation (length of the square) @param col choosen color @return a square of length dilat *)
+(** Draws a square 
+    [p] starting point of the square in the work place
+    [base_draw] starting point of the work place
+    [dilat] dilation (length of the square)
+    [col] choosen color *)
 
 let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
@@ -131,11 +118,10 @@ let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_colo
 ;;
 
 (** Draws a square fulled by the color square
-    @param p starting point of the square in the work place
-    @param base_draw starting point of the work place
-    @param dilat dilation (length of the square)
-    @param col choosen color
-    @return a square and its outline *) 
+    [p] starting point of the square in the work place
+    [base_draw] starting point of the work place
+    [dilat] dilation (length of the square)
+    [col] choosen color *) 
 
 let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
@@ -145,46 +131,42 @@ let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_
 ;;
 
 (** Draws the outline of a square
-    @param p starting point defined relatively of base_point
-    @param base_point local origin point
-    @param base_draw display space
-    @dilat dilation (length of the square)
-    @param col color of the outline
-    @return the outline of the square of length dilat *)
+    [p] starting point defined relatively of base_point
+    [base_point] local origin point
+    [base_draw] display space
+    [dilation] (length of the square)
+    [col] color of the outline *)
 
 let draw_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
     draw_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
 ;;
 
 (** Draws a square
-    @param p starting point defined relatively of base_point
-    @param base_point local origin point
-    @param dilat dilation (length of the square)
-    @param col color of the square
-    @return the square of length dilat *)
+    [p] starting point defined relatively of base_point
+    [base_point] local origin point
+    [dilat] dilation (length of the square)
+    [col] color of the square *)
 
 let fill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
    fill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
 ;;
 
 (** Draws a square fulled by the color square
-    @param p starting point defined relatively of base_point
-    @param base_draw starting local origin point
-    @param dilat dilation (length of the square)
-    @param col color of the square
-    @return the square and its outline of length dilat *)
+    [p] starting point defined relatively of base_point
+    [base_draw] starting local origin point
+    [dilat] dilation (length of the square)
+    [col] color of the square *)
 
 let drawfill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
    drawfill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
 ;;
 
 (** Draws the outlines of multiples squares wich are referenced in the l t_point list
-    @param l list of points
-    @param base_pt local origin point
-    @param base_draw display space
-    @param dilat dilation (length of the square)
-    @col color of the square
-    @return the outlines of multiples squares of length dilat *)
+    [l] list of points
+    [base_pt] local origin point
+    [base_draw] display space
+    [dilat] dilation (length of the square)
+    [col] color of the square *)
 
 let draw_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point* t_point * int * t_color) : unit =
   for i = 0 to (len(l)-1)
@@ -194,12 +176,11 @@ let draw_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point* t_p
 ;;
 
 (** Draws multiples full squares wich are referenced in the l t_point list
-    @param l list of points
-    @param base_pt local origin point
-    @param base_draw display space
-    @param dilat dilation (length of the square)
-    @col color of the square
-    @return multiples full squares of length dilat *)
+    [l] list of points
+    [base_pt] local origin point
+    [base_draw] display space
+    [dilat] dilation (length of the square)
+    [col] color of the square *)
 
 let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_point * int * t_color) : unit=
   for i = 0 to (len(l)-1)
@@ -209,12 +190,11 @@ let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_p
 ;;
 
 (** Draws multiples full squares and their outlines wich are referenced in the l t_point list
-    @param l list of points
-    @param base_pt local origin point
-    @param base_draw display space
-    @param dilat dilation (length of the square)
-    @col color of the square
-    @return multiples full squares and their outlines of length dilat *)
+    [l] list of points
+    [base_pt] local origin point
+    [base_draw] display space
+    [dilat] dilation (length of the square)
+    [col] color of the square *)
 
 let drawfill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point * t_point * int * t_color) : unit=
   for i = 0 to (len(l)-1)
@@ -329,12 +309,42 @@ let color_choice(t : t_color t_array) : t_color =
 ;;
 
 let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int * int * t_color t_array) : t_cur_shape =
-  let rand_x : int = rand_int(0, mat_szx)
-  and rand_shape : int = rand_int(0, shapes.len -1)
+  let rand_shape : int = rand_int(0, shapes.len - 1) in
+  let rand_x : int = rand_int(0, mat_szx - shapes.value.(rand_shape).x_len)
+  and y : int = mat_szy - shapes.value.(rand_shape).y_len
   and rand_color : int = rand_int(0, color_arr.len -1) in
-  {base = ref {x = rand_x; y = mat_szy}; shape = ref rand_shape; color = ref color_arr.value.(rand_color)}
+  {base = ref {x = rand_x; y = y}; shape = ref rand_shape; color = ref color_arr.value.(rand_color)}
 ;;
 
+let rec insert(cur, shape, param, mymat : t_cur_shape * t_point list * t_param * t_color matrix) : bool=
+  if isempty(shape)
+  then true
+  else
+    let my_point : t_point = fst(shape) in
+    if mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) = white
+    then
+    (
+      mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) <- !(cur.color);
+      insert(cur, rem_fst(shape), param, mymat)
+    )
+    else
+      false
+;;
+
+let init_play() : t_play =
+    let prm : t_param = init_param() in
+    let play : t_play = { par = prm; cur_shape = cur_shape_choice( prm.shapes,prm.mat_szx, prm.mat_szy, prm.graphics.color_arr); mat = mat_make(prm.mat_szy, prm.mat_szx, white)}
+    in
+    (
+    if insert(play.cur_shape, play.par.shapes.value.(!(play.cur_shape.shape)).shape, play.par, play.mat)
+    then
+      (
+        draw_frame(play.par.graphics.base, play.par.mat_szx, play.par.mat_szy, play.par.graphics.dilat);
+        drawfill_pt_list(play.par.shapes.value.(!(play.cur_shape.shape)).shape, !(play.cur_shape.base), play.par.graphics.base, play.par.graphics.dilat, !(play.cur_shape.color));
+      );
+    play
+    )
+;;
 
 (* ----------------------------------------------- *)
 (* ----------------------------------------------- *)
@@ -342,7 +352,45 @@ let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int
 (* ----------------------------------------------- *)
 (* ----------------------------------------------- *)
 
-(* choix des deplacements suivant le caractere saisi
+(* choix des deplacements suivant le caractere saisi*)
+
+let valid_matrix_point(p, param : t_point * t_param ) : bool =
+  (p.x >= 0 && p.x <= param.mat_szx - 1) && (p.y >= 0 && p.y <= param.mat_szy -1)
+;;
+
+let rec is_free_move(p, shape, mymat,param :t_point * t_point list * t_color matrix * t_param) : bool =
+  let temp_point : t_point = fst(shape) in
+  if isempty(shape)
+  then true
+  else if  valid_matrix_point({x = p.x + temp_point.x; y = p.y + temp_point.y}, param)
+       then  is_free_move(p, rem_fst(shape), mymat, param)
+       else false
+;;
+
+let move_left(pl : t_play) : unit =
+  ()
+;;
+
+let move_right(pl : t_play) : unit =
+  ()
+;;
+
+let move_down(pl : t_play) : bool =
+  true
+;;
+
+let rotate_right(pl : t_play) : unit =
+  ()
+;;
+
+let rotate_left(pl : t_play) : unit =
+  ()
+;;
+
+let move_at_bottom(pl : t_play) : unit =
+  ()
+;;
+
 let move(pl, dir : t_play * char) : bool = 
   (
   if dir = 't'
@@ -360,24 +408,63 @@ let move(pl, dir : t_play * char) : bool =
   (dir = 'v')
   )
 ;;
-
-let valid_matrix_point(p, param : t_point * t_param ) : bool =
-  (x >= 0 && x <= mat_szx - 1) && (y >= 0 && y <= mat_szy -1)
-;;
-
+                 
 (* ----------------------------------- *)
 (* ----------------------------------- *)
 (*    Suppression des lignes pleines   *)
 (* ----------------------------------- *)
 (* ----------------------------------- *)
 
+let is_column_full(mymat, y, mat_szx : t_color matrix * int * int) : bool =
+  let is_full : bool ref = ref true in
+  for i = 0 to mat_szx - 1
+  do
+   if mymat.(y).(i) = white
+   then is_full := false
+  done;
+  !is_full
+;;
+
+let decal(mymat, y, szx, szy, par : t_color matrix * int * int * int * t_param) : unit =
+  for i = 0 to szy
+  do
+    if i > y
+    then mymat.(i - 1) <- mymat.(i)
+  done
+;;
+
+let clear_play(pl : t_play) : unit =
+  for i = 0 to pl.par.mat_szy
+  do
+    if is_column_full(pl.mat, i, pl.par.mat_szx)
+    then decal(pl.mat, i, pl.par.mat_szx, pl.par.mat_szy, pl.par)
+  done
+;;
+
+let final_insert(pl : t_play) : bool =
+  insert(pl.cur_shape,pl.par.shapes.value.(!(pl.cur_shape.shape)).shape, pl.par, pl.mat)
+;;
+
+let final_newstep(pl : t_play) : bool =
+  let new_cur_shape : t_cur_shape = cur_shape_choice(pl.par.shapes, pl.par.mat_szx, pl.par.mat_szy, pl.par.graphics.color_arr) in
+  if is_free_move(!(pl.cur_shape.base),pl.par.shapes.value.(!(pl.cur_shape.shape)).shape,pl.mat, pl.par)
+  then true
+  else
+    (
+      final_insert(pl);
+      clear_play(pl);
+      pl.cur_shape.base := !(new_cur_shape.base);
+      pl.cur_shape.shape := !(new_cur_shape.shape);
+      pl.cur_shape.color := !(new_cur_shape.color);
+      false
+    )
+;;
 
 (* --------------------- *)
 (* --------------------- *)
 (*   Une etape de jeu    *)
 (* --------------------- *)
 (* --------------------- *)
-
 
 
 let newstep(pl, new_t, t, dt : t_play * float ref * float * float) : bool = 
@@ -414,19 +501,18 @@ let newstep(pl, new_t, t, dt : t_play * float ref * float * float) : bool =
 let jeuCP2() : unit =
   let pl : t_play = init_play() in
   let t : float ref = ref (Sys.time()) and new_t : float ref = ref (Sys.time()) in
-  let dt : float ref = ref (time_init(pl.par)) and t_acc : float ref = ref (Sys.time()) in
+  let dt : float ref = ref (pl.par.time.init) and t_acc : float ref = ref (Sys.time()) in
   let the_end : bool ref = ref false in
     while not(!the_end)
     do
       the_end := newstep(pl, new_t, !t, !dt) ; 
-      if ((!new_t -. !t_acc) > time_extent(pl.par))
+      if ((!new_t -. !t_acc) > pl.par.time.extent)
       then 
         (
-        dt := !dt *. time_ratio(pl.par) ; 
+        dt := !dt *. pl.par.time.ratio; 
         t_acc := !new_t
         ) 
       else () ;
       t := !new_t
     done
 ;;
- *)
