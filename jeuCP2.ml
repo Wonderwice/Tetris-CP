@@ -100,7 +100,7 @@ let init_param() : t_param =
 let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
     set_color(col);
-    draw_rect( (p.x*dilat) + base_draw.x ,( p.y * dilat) + base_draw.y, p.x + 1 * dilat, p.y + 1 * dilat);
+    draw_rect(p.x * dilat + base_draw.x , p.y * dilat + base_draw.y, dilat - 1, dilat - 1);
   )
 ;;
 
@@ -113,7 +113,7 @@ let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_colo
 let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
     set_color(col);
-    fill_rect((p.x * dilat) + base_draw.x + 1 , (p.y*dilat) + base_draw.y +1, (p.x + 1 * dilat) - 2,( p.y + 1 * dilat)-2);
+    fill_rect(p.x * dilat + base_draw.x, p.y * dilat + base_draw.y, dilat - 1, dilat - 1);
   )
 ;;
 
@@ -204,7 +204,14 @@ let drawfill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point 
 ;;
 
 let draw_frame(base_draw, size_x, size_y, dilat : t_point * int * int * int) : unit =
-  draw_rect(base_draw.x, base_draw.y, size_x * dilat, size_y * dilat)
+  for xpos = 0 to size_x - 1
+  do
+    for ypos = 0 to size_y - 1
+    do
+      if xpos = size_x - 1 || xpos = 0 || ypos = 0
+      then fill_absolute_pt({x = xpos ; y = ypos}, base_draw, dilat, black)
+    done
+  done
 ;;
 
 (*-------------------------------*)
@@ -359,16 +366,17 @@ let valid_matrix_point(p, param : t_point * t_param ) : bool =
 ;;
 
 let rec is_free_move(p, shape, mymat,param :t_point * t_point list * t_color matrix * t_param) : bool =
-  let temp_point : t_point = fst(shape) in
   if isempty(shape)
   then true
-  else if  valid_matrix_point({x = p.x + temp_point.x; y = p.y + temp_point.y}, param)
-       then  is_free_move(p, rem_fst(shape), mymat, param)
-       else false
+  else
+      let temp_point : t_point = fst(shape) in
+      if  valid_matrix_point({x = p.x + temp_point.x; y = p.y + temp_point.y}, param)
+      then  is_free_move(p, rem_fst(shape), mymat, param)
+      else false
 ;;
 
 let move_left(pl : t_play) : unit =
-  ()
+  ((*modif cur shape*))
 ;;
 
 let move_right(pl : t_play) : unit =
@@ -376,7 +384,7 @@ let move_right(pl : t_play) : unit =
 ;;
 
 let move_down(pl : t_play) : bool =
-  true
+    is_free_move({x = !(pl.cur_shape.base).x; y = !(pl.cur_shape.base).y - 1}, pl.par.shapes.value.(!(pl.cur_shape.shape)).shape, pl.mat, pl.par)
 ;;
 
 let rotate_right(pl : t_play) : unit =
@@ -388,7 +396,7 @@ let rotate_left(pl : t_play) : unit =
 ;;
 
 let move_at_bottom(pl : t_play) : unit =
-  ()
+()
 ;;
 
 let move(pl, dir : t_play * char) : bool = 
@@ -404,7 +412,7 @@ let move(pl, dir : t_play * char) : bool =
         else
           if dir = 'h'
           then move_right(pl)
-          else () ;  
+          else () ; 
   (dir = 'v')
   )
 ;;
@@ -448,7 +456,7 @@ let final_insert(pl : t_play) : bool =
 let final_newstep(pl : t_play) : bool =
   let new_cur_shape : t_cur_shape = cur_shape_choice(pl.par.shapes, pl.par.mat_szx, pl.par.mat_szy, pl.par.graphics.color_arr) in
   if is_free_move(!(pl.cur_shape.base),pl.par.shapes.value.(!(pl.cur_shape.shape)).shape,pl.mat, pl.par)
-  then true
+  then (* ??? *)
   else
     (
       final_insert(pl);
@@ -456,7 +464,7 @@ let final_newstep(pl : t_play) : bool =
       pl.cur_shape.base := !(new_cur_shape.base);
       pl.cur_shape.shape := !(new_cur_shape.shape);
       pl.cur_shape.color := !(new_cur_shape.color);
-      false
+    (* ??? *)
     )
 ;;
 
