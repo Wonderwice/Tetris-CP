@@ -91,7 +91,7 @@ let init_param() : t_param =
 ;;
 
 (** Draws the outline of the square.
-    [p] starting point of the square in the work place
+    [p] coordinates of the square in the work place
     [base_draw] starting point of the work place
     [dilat] dilation (length of the square)
     [col] choosen color
@@ -105,7 +105,7 @@ let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_colo
 ;;
 
 (** Draws a square 
-    [p] starting point of the square in the work place
+    [p] coordinates of the square in the work place
     [base_draw] starting point of the work place
     [dilat] dilation (length of the square)
     [col] choosen color *)
@@ -118,7 +118,7 @@ let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_colo
 ;;
 
 (** Draws a square fulled by the color square
-    [p] starting point of the square in the work place
+    [p] coordinates of the square in the work place
     [base_draw] starting point of the work place
     [dilat] dilation (length of the square)
     [col] choosen color *) 
