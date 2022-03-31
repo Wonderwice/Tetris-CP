@@ -1,5 +1,6 @@
-open_graph(500,500);;
-
+open CPutil;;
+open JeuCP2;;
+   
 let read_test_result() : string =
   let result : string ref = ref "" and the_end : bool ref = ref false in
   (
