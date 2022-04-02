@@ -49,9 +49,10 @@ type t_param =
    mat_szx : int ; mat_szy : int ;
    graphics : t_param_graphics ; 
    shapes : t_shape t_array
-} ;;
+  }
+;;
 
-type t_play = {par : t_param ; cur_shape : t_cur_shape ; mat : t_color matrix} ;;
+type t_play = {par : t_param ; cur_shape : t_cur_shape ; mat : t_color matrix};;
 
 
 (* Initialisation de quelques formes et des parametres *)
@@ -331,7 +332,6 @@ let rec insert(cur, shape, param, mymat : t_cur_shape * t_point list * t_param *
     if mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) = white
     then
     (
-      mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) <- !(cur.color);
       drawfill_pt_list(param.shapes.value.(!(cur.shape)).shape, !(cur.base), param.graphics.base, param.graphics.dilat, !(cur.color));
       insert(cur, rem_fst(shape), param, mymat)
     )
@@ -375,11 +375,15 @@ let rec is_free_move(p, shape, mymat,param :t_point * t_point list * t_color mat
 ;;
 
 let move_left(pl : t_play) : unit =
-  ((*modif cur shape*))
+  let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x - 1; y = !(pl.cur_shape.base).y}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
+  if insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat)
+  then ()
 ;;
 
 let move_right(pl : t_play) : unit =
-  ()
+    let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x + 1; y = !(pl.cur_shape.base).y - 1}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
+    if insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat)
+    then ()
 ;;
 
 let move_down(pl : t_play) : bool =
@@ -453,8 +457,20 @@ let clear_play(pl : t_play) : unit =
   done
 ;;
 
+let rec final_insert_aux(pl, my_point_list, mymat, cur : t_play * t_point list * t_color matrix * t_cur_shape) : bool =
+  if isempty(my_point_list)
+  then true
+  else
+    let my_point : t_point = fst(my_point_list) in
+    if mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) = white
+    then
+      (mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) <- !(cur.color);
+       final_insert_aux(pl, rem_fst(my_point_list), mymat, cur))
+       else false
+;;
+
 let final_insert(pl : t_play) : bool =
-  insert(pl.cur_shape,pl.par.shapes.value.(!(pl.cur_shape.shape)).shape, pl.par, pl.mat)
+  final_insert_aux(pl, pl.par.shapes.value.(!(pl.cur_shape.shape)).shape, pl.mat, pl.cur_shape)
 ;;
 
 let final_newstep(pl : t_play) : bool =
