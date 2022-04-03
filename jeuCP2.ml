@@ -1,11 +1,13 @@
-(** @author Loan Patris & Alexeï Czornyj & Styven Drui & Nicolas Moreau *)
-
+(** *)
+open CPutil;;
 (* -------------------------- *)
 (* -------------------------- *)
 (*    fonctions utilitaires   *)
 (* -------------------------- *)
 (* -------------------------- *) 
-
+(** mywait function is used to slow down some game steps
+    {%html: <br> %}
+    [x] the number of seconds in which the function is executed*)
 let mywait(x : float) : unit =
   let y : float ref = ref (Sys.time()) in
   while (Sys.time() -. !y) < x
@@ -20,6 +22,7 @@ let mywait(x : float) : unit =
 (* --------------------------------- *)
 (* --------------------------------- *)
 
+(** type t_point is the reprensentation of a point on a 2 dimensions space *)
 type t_point = {x : int ; y : int} ;;
 
 (* ------------------------------------------------- *)
@@ -29,13 +32,33 @@ type t_point = {x : int ; y : int} ;;
 (* ------------------------------------------------- *)
 
 (* Types *)
-
+(** type t_array is used to represent an array with his len and value, it have a lower cost of use than the len() function *)
 type 'a t_array = {len : int ; value : 'a array} ;;
 
+(** type t_shape is the representation of a shape which is used on the tetris
+    {%html: <br> %}
+    [shape] stands for the list of points who compose the shape
+    {%html: <br> %}
+    [x_len] is for the lenght of the shape on the x axis
+    {%html: <br> %}
+    [y_len] is for the lenght of the shape on the y axis
+    {%html: <br> %}
+    [rot_rgt_base] and [rot_rgt_shape] describe the shape with a right 90 degrees rotation 
+    {%html: <br> %}
+    [rot_lft_base] and [rot_lft_shape]  describe the shape with a left 90 degrees rotation 
+    *)
 type t_shape = {shape : t_point list ; x_len : int ; y_len : int ; 
                 rot_rgt_base : t_point ; rot_rgt_shape : int ; 
                 rot_lft_base : t_point ; rot_lft_shape : int} ;; 
 
+(** type t_cur_shape is use for the representation of the current shape in the display space
+    {%html: <br> %}
+    [base] stands for the relative origin of the shape
+    {%html: <br> %}
+    [shape] is the index of the current shape in a t_shape t_array
+    {%html: <br> %}
+    [color] is for the color of the shape
+*)
 type t_cur_shape = {base : t_point ref ; shape : int ref ; color : t_color ref} ;;
 
 
@@ -92,12 +115,11 @@ let init_param() : t_param =
 ;;
 
 (** Draws the outline of the square.
-    [p] coordinates of the square in the work place
-    [base_draw] starting point of the work place
-    [dilat] dilation (length of the square)
-    [col] choosen color
-    author Loan *)
-
+    @param p coordinates of the square in the work place
+    @param base_draw starting point of the work place
+    @param dilat dilation (length of the square)
+    @param col choosen color
+    @author Alexei *)
 let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
     set_color(col);
@@ -106,24 +128,24 @@ let draw_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_colo
 ;;
 
 (** Draws a square 
-    [p] coordinates of the square in the work place
-    [base_draw] starting point of the work place
-    [dilat] dilation (length of the square)
-    [col] choosen color *)
-
+    @param p coordinates of the square in the work place
+    @param base_draw starting point of the work place
+    @param dilat dilation (length of the square)
+    @param col choosen color 
+    @author Alexei*)
 let fill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
     set_color(col);
-    fill_rect(p.x * dilat + base_draw.x, p.y * dilat + base_draw.y, dilat - 1, dilat - 1);
+    fill_rect(p.x * dilat + base_draw.x + 1, p.y * dilat + base_draw.y + 1, dilat - 3, dilat - 3);
   )
 ;;
 
 (** Draws a square fulled by the color square
-    [p] coordinates of the square in the work place
-    [base_draw] starting point of the work place
-    [dilat] dilation (length of the square)
-    [col] choosen color *) 
-
+    @param p coordinates of the square in the work place
+    @param base_draw starting point of the work place
+    @param dilat dilation (length of the square)
+    @param col choosen color
+    @author Alexei*) 
 let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_color) : unit =
   (
     draw_absolute_pt(p, base_draw, dilat, black);
@@ -132,43 +154,43 @@ let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_
 ;;
 
 (** Draws the outline of a square
-    [p] starting point defined relatively of base_point
-    [base_point] local origin point
-    [base_draw] display space
-    [dilation] (length of the square)
-    [col] color of the outline *)
-
+    @param p starting point defined relatively of base_point
+    @param base_point local origin point
+    @param base_draw display space
+    @param dilation (length of the square)
+    @param col color of the outline
+    @author Alexei*)
 let draw_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
     draw_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
 ;;
 
 (** Draws a square
-    [p] starting point defined relatively of base_point
-    [base_point] local origin point
-    [dilat] dilation (length of the square)
-    [col] color of the square *)
-
+    @param p starting point defined relatively of base_point
+    @param base_point local origin point
+    @param dilat dilation (length of the square)
+    @param col color of the square
+    @author Alexei*)
 let fill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
    fill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
 ;;
 
 (** Draws a square fulled by the color square
-    [p] starting point defined relatively of base_point
-    [base_draw] starting local origin point
-    [dilat] dilation (length of the square)
-    [col] color of the square *)
-
+    @param p starting point defined relatively of base_point
+    @param base_draw starting local origin point
+    @param dilat dilation (length of the square)
+    @param col color of the square
+    @author Alexei*)
 let drawfill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
    drawfill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
 ;;
 
 (** Draws the outlines of multiples squares wich are referenced in the l t_point list
-    [l] list of points
-    [base_pt] local origin point
-    [base_draw] display space
-    [dilat] dilation (length of the square)
-    [col] color of the square *)
-
+    @param l list of points
+    @param base_pt local origin point
+    @param base_draw display space
+    @param dilat dilation (length of the square)
+    @param col color of the square
+    @author Alexei *)
 let draw_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point* t_point * int * t_color) : unit =
   for i = 0 to (len(l)-1)
   do
@@ -177,12 +199,12 @@ let draw_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point* t_p
 ;;
 
 (** Draws multiples full squares wich are referenced in the l t_point list
-    [l] list of points
-    [base_pt] local origin point
-    [base_draw] display space
-    [dilat] dilation (length of the square)
-    [col] color of the square *)
-
+    @param l list of points
+    @param base_pt local origin point
+    @param base_draw display space
+    @param dilat dilation (length of the square)
+    @param col color of the square
+    @author Alexei *)
 let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_point * int * t_color) : unit=
   for i = 0 to (len(l)-1)
   do
@@ -191,12 +213,11 @@ let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_p
 ;;
 
 (** Draws multiples full squares and their outlines wich are referenced in the l t_point list
-    [l] list of points
-    [base_pt] local origin point
-    [base_draw] display space
-    [dilat] dilation (length of the square)
-    [col] color of the square *)
-
+    @param l list of points
+    @param base_pt local origin point
+    @param base_draw display space
+    @param dilat dilation (length of the square)
+    @param col color of the square *)
 let drawfill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point * t_point * int * t_color) : unit=
   for i = 0 to (len(l)-1)
   do
@@ -402,9 +423,12 @@ let rotate_left(pl : t_play) : unit =
 ;;
 
 let move_at_bottom(pl : t_play) : unit =
-  (
-    
-  )
+  let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x; y = !(pl.cur_shape.base).y - 1}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
+  while (!(cur_shape.base).y <> 0 || insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat))
+  do
+    move_down(pl)
+  done;
+  ()
 ;;
 
 let move(pl, dir : t_play * char) : bool = 
