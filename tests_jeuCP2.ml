@@ -1,6 +1,6 @@
 open CPutil;;
 open JeuCP2;;
-
+(** *)
 let read_test_result() : string =
   let result : string ref = ref "" and the_end : bool ref = ref false in
   (
@@ -276,21 +276,16 @@ let test_draw_frame_functional(status : t_test_status) : unit =
 
 let test_getParam_functional(status : t_test_status) : unit =
   let test_step : t_test_step = test_start(status, "getParam_functional")
-  and play : t_play = init_play()
-  and result : string ref = ref "" in
+  and play : t_play = init_play() in
+  let test_result : t_param t_test_result = test_exec(test_step, getParam, play) in
   (
-    clear_graph();
-    let test_result : unit t_test_result = test_exec(test_step, getParam, play) in
-    (
-      if test_is_success(test_result)
-      then
-        (
-          result := read_test_result();
-          assert_equals(test_step, "Le t_param est extrait du t_play", !result, init_param())
-        )
-      else test_error(test_step) ;
-      test_end(test_step)
-    )
+    if test_is_success(test_result)
+    then
+      (
+        assert_equals(test_step, "Le t_param est bien extrait du t_play", test_get(test_result), init_param())
+      )
+    else test_error(test_step);
+    test_end(test_step)
   )
 ;;
 
@@ -307,7 +302,7 @@ let test_run() : unit =
       test_fill_pt_list_functional(alltests);
       test_drawfill_pt_list_functional(alltests);
       test_draw_frame_functional(alltests);
-      test_getParam_functinal(alltests);
+      test_getParam_functional(alltests);
     (* Print test status at the end *)
     print_test_report(alltests)
     )

@@ -31,13 +31,57 @@ type t_cur_shape is use for the representation of the current shape in the displ
 </div>
 </td></tr>
 <tr><td><a href="JeuCP2.html#TYPEt_param">t_param</a> [<a href="JeuCP2.html">JeuCP2</a>]</td>
-<td></td></tr>
+<td><div class="info">
+type_t_param contains time settings and graphics settings,
+two fields mat_szx and mat_szy containing the dimensions of the matrix representing the space of
+work, as well as a table containing the available abstract shapes
+<br> 
+<code class="code">time</code> contains the time parameters
+<br> 
+<code class="code">mat_szx</code> contains the dimensions of the matrix on the x axis representing the space of work
+<br> 
+<code class="code">mat_szy</code> contains the dimensions of the matrix on the y axis representing the space of work
+<br> 
+<code class="code">graphics</code> contains the graphics settings
+<br> 
+<code class="code">shapes</code> represents an array containing the available abstract shapes
+</div>
+</td></tr>
 <tr><td><a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a> [<a href="JeuCP2.html">JeuCP2</a>]</td>
-<td></td></tr>
+<td><div class="info">
+type t_param_graphics is the representation of the graphics settings
+<br> 
+<code class="code">base</code> contains the origin of the work space and it's defined in the display space
+<br> 
+<code class="code">dilat</code> contains the "scaling coefficient" between the workspace and the display space
+<br> 
+<code class="code">color_arr</code> contains an array of colors that can be used for shapes concrete
+</div>
+</td></tr>
 <tr><td><a href="JeuCP2.html#TYPEt_param_time">t_param_time</a> [<a href="JeuCP2.html">JeuCP2</a>]</td>
-<td></td></tr>
+<td><div class="info">
+type t_param_time is the representation of the time parameters
+<br> 
+<code class="code">init</code> contains the initial duration (in seconds) of a movement
+<br> 
+<code class="code">extent</code> contains the duration between two accelerations
+<br> 
+<code class="code">ratio</code> contains the acceleration coefficient
+</div>
+</td></tr>
 <tr><td><a href="JeuCP2.html#TYPEt_play">t_play</a> [<a href="JeuCP2.html">JeuCP2</a>]</td>
-<td></td></tr>
+<td><div class="info">
+type t_play used to represent game information
+<br> 
+<code class="code">par</code> contains game settings
+<br> 
+<code class="code">cur_shape</code> contains the description of the
+current form, which moves until blocked; in this case, it is integrated into the matrix
+game, and a new shape is chosen as the current shape
+<br> 
+<code class="code">mat</code> is the matrix describing the workspace
+</div>
+</td></tr>
 <tr><td><a href="JeuCP2.html#TYPEt_point">t_point</a> [<a href="JeuCP2.html">JeuCP2</a>]</td>
 <td><div class="info">
 type t_point is the reprensentation of a point on a 2 dimensions space
