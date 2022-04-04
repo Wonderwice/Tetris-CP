@@ -1,5 +1,5 @@
-open CPutil;;
-open JeuCP2;;
+(*open CPutil;;
+open JeuCP2;;*)
 
 let read_test_result() : string =
   let result : string ref = ref "" and the_end : bool ref = ref false in
@@ -14,7 +14,7 @@ let read_test_result() : string =
 ;;
 
 let test_draw_absolute_pt_functional(status : t_test_status) : unit =
-  let test_step : t_test_step =  test_start(status,"draw_absolute_pt_functional") 
+  let test_step : t_test_step =  test_start(status,"draw_absolute_pt_functional)") 
   and p : t_point = {x = 0; y = 0}
   and base_draw : t_point = {x = 50; y = 50}
   and dilat : int = 50
@@ -39,7 +39,7 @@ let test_draw_absolute_pt_functional(status : t_test_status) : unit =
 ;;
 
 let test_fill_absolute_pt_functional(status : t_test_status) : unit =
-  let test_step : t_test_step =  test_start(status,"fill_absolute_pt_functional") 
+  let test_step : t_test_step =  test_start(status,"fill_absolute_pt_functional)") 
   and p : t_point = {x = 0; y = 0}
   and base_draw : t_point = {x = 50; y = 50}
   and dilat : int = 50
@@ -64,7 +64,7 @@ let test_fill_absolute_pt_functional(status : t_test_status) : unit =
 ;;
 
 let test_drawfill_absolute_pt_functional(status : t_test_status) : unit =
-  let test_step : t_test_step =  test_start(status,"drawfill_absolute_pt_functional") 
+  let test_step : t_test_step =  test_start(status,"drawfill_absolute_pt_functional)") 
   and p : t_point = {x = 0; y = 0}
   and base_draw : t_point = {x = 50; y = 50}
   and dilat : int = 50
@@ -89,7 +89,7 @@ let test_drawfill_absolute_pt_functional(status : t_test_status) : unit =
 ;;
 
 let test_draw_relative_pt_functional(status : t_test_status) : unit =
-  let test_step : t_test_step =  test_start(status,"draw_relative_pt_functional") 
+  let test_step : t_test_step =  test_start(status,"draw_relative_pt_functional)") 
   and p : t_point = {x = 0; y = 0}
   and base_draw : t_point = {x = 50; y = 50}
   and base_point : t_point = {x = 1; y = 1}
@@ -115,7 +115,7 @@ let test_draw_relative_pt_functional(status : t_test_status) : unit =
 ;;
 
 let test_fill_relative_pt_functional(status : t_test_status) : unit =
-  let test_step : t_test_step =  test_start(status,"fill_relative_pt_functional") 
+  let test_step : t_test_step =  test_start(status,"fill_relative_pt_functional)") 
   and p : t_point = {x = 0; y = 0}
   and base_draw : t_point = {x = 50; y = 50}
   and base_point : t_point = {x = 1; y = 1}
@@ -141,7 +141,7 @@ let test_fill_relative_pt_functional(status : t_test_status) : unit =
 ;;
 
 let test_drawfill_relative_pt_functional(status : t_test_status) : unit =
-  let test_step : t_test_step =  test_start(status,"drawfill_relative_pt_functional") 
+  let test_step : t_test_step =  test_start(status,"drawfill_relative_pt_functional)") 
   and p : t_point = {x = 0; y = 0}
   and base_draw : t_point = {x = 50; y = 50}
   and base_point : t_point = {x = 1; y = 1}
@@ -167,7 +167,7 @@ let test_drawfill_relative_pt_functional(status : t_test_status) : unit =
 ;;
 
 let test_draw_pt_list_functional(status : t_test_status) : unit =
-  let test_step : t_test_step =  test_start(status,"draw_pt_list_functional") 
+  let test_step : t_test_step =  test_start(status,"draw_pt_list_functional)") 
   and p_list : t_point list = [{x = 0; y = 0}; {x = 0; y = 2}; {x = 2; y = 0}; {x = 2; y = 2}]
   and base_draw : t_point = {x = 50; y = 50}
   and base_point : t_point = {x = 0; y = 0}
@@ -193,7 +193,7 @@ let test_draw_pt_list_functional(status : t_test_status) : unit =
 ;;
 
 let test_fill_pt_list_functional(status : t_test_status) : unit =
-  let test_step : t_test_step =  test_start(status,"fill_pt_list_functional") 
+  let test_step : t_test_step =  test_start(status,"fill_pt_list_functional)") 
   and p_list : t_point list = [{x = 0; y = 0}; {x = 0; y = 2}; {x = 2; y = 0}; {x = 2; y = 2}]
   and base_draw : t_point = {x = 50; y = 50}
   and base_point : t_point = {x = 0; y = 0}
@@ -219,7 +219,7 @@ let test_fill_pt_list_functional(status : t_test_status) : unit =
 ;;
 
 let test_drawfill_pt_list_functional(status : t_test_status) : unit =
-  let test_step : t_test_step =  test_start(status,"drawfill_pt_list_functional") 
+  let test_step : t_test_step =  test_start(status,"drawfill_pt_list_functional)") 
   and p_list : t_point list = [{x = 0; y = 0}; {x = 0; y = 2}; {x = 2; y = 0}; {x = 2; y = 2}]
   and base_draw : t_point = {x = 50; y = 50}
   and base_point : t_point = {x = 0; y = 0}
@@ -245,7 +245,7 @@ let test_drawfill_pt_list_functional(status : t_test_status) : unit =
 ;;
 
 let test_draw_frame_functional(status : t_test_status) : unit =
-  let test_step : t_test_step =  test_start(status,"draw_frame_functional")
+  let test_step : t_test_step =  test_start(status,"draw_frame_functional)")
   and size_x : int = 15
   and size_y : int = 28
   and dilat : int = 20
@@ -270,30 +270,6 @@ let test_draw_frame_functional(status : t_test_status) : unit =
 
 ;;
 
-(** Tests if the outcome of the function getParam is extracted from the type t_play
-    @param status saves the result of the test function 
-    @author Loan *)
-
-let test_getParam_functional(status : t_test_status) : unit =
-  let test_step : t_test_step = test_start(status, "getParam_functional")
-  and play : t_play = init_play()
-  and result : string ref = ref "" in
-  (
-    clear_graph();
-    let test_result : unit t_test_result = test_exec(test_step, getParam, play) in
-    (
-      if test_is_success(test_result)
-      then
-        (
-          result := read_test_result();
-          assert_equals(test_step, "Le t_param est extrait du t_play", !result, init_param())
-        )
-      else test_error(test_step) ;
-      test_end(test_step)
-    )
-  )
-;;
-
 let test_run() : unit =
   let alltests : t_test_status = create_test_status() in
     (
@@ -307,7 +283,6 @@ let test_run() : unit =
       test_fill_pt_list_functional(alltests);
       test_drawfill_pt_list_functional(alltests);
       test_draw_frame_functional(alltests);
-      test_getParam_functinal(alltests);
     (* Print test status at the end *)
     print_test_report(alltests)
     )
