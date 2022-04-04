@@ -18,12 +18,16 @@
 <pre><span class="keyword">module</span> JeuCP2: <code class="code">sig</code> <a href="JeuCP2.html">..</a> <code class="code">end</code></pre><div class="info module top">
 </div>
 <hr width="100%">
+<br>
+<h2> Fonctions utilitaires </h2><br>
 
 <pre><span id="VALmywait"><span class="keyword">val</span> mywait</span> : <code class="type">float -> unit</code></pre><div class="info ">
 mywait function is used to slow down some game steps
     <br> 
     <code class="code">x</code> the number of seconds in which the function is executed<br>
 </div>
+<br>
+<h2>Types et fonctions graphique</h2><br>
 
 <pre><code><span id="TYPEt_point"><span class="keyword">type</span> <code class="type"></code>t_point</span> = {</code></pre><table class="typetable">
 <tr>
@@ -379,29 +383,98 @@ Draws multiples full squares and their outlines wich are referenced in the l t_p
 <code>l</code> : list of points</div>
 
 <pre><span id="VALdraw_frame"><span class="keyword">val</span> draw_frame</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * int * int * int -> unit</code></pre>
-<pre><span id="VALgetParam"><span class="keyword">val</span> getParam</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> <a href="JeuCP2.html#TYPEt_param">t_param</a></code></pre>
-<pre><span id="VALgetCurShape"><span class="keyword">val</span> getCurShape</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> <a href="JeuCP2.html#TYPEt_cur_shape">t_cur_shape</a></code></pre>
-<pre><span id="VALgetMat"><span class="keyword">val</span> getMat</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> CPutil.t_color CPutil.matrix</code></pre>
-<pre><span id="VALgetTime"><span class="keyword">val</span> getTime</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> <a href="JeuCP2.html#TYPEt_param_time">t_param_time</a></code></pre>
-<pre><span id="VALgetMat_szx"><span class="keyword">val</span> getMat_szx</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> int</code></pre>
-<pre><span id="VALgetMat_szy"><span class="keyword">val</span> getMat_szy</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> int</code></pre>
-<pre><span id="VALgetGraphics"><span class="keyword">val</span> getGraphics</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> <a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a></code></pre>
-<pre><span id="VALgetShapes"><span class="keyword">val</span> getShapes</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> <a href="JeuCP2.html#TYPEt_shape">t_shape</a> <a href="JeuCP2.html#TYPEt_array">t_array</a></code></pre>
-<pre><span id="VALgetInitTime"><span class="keyword">val</span> getInitTime</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_time">t_param_time</a> -> float</code></pre>
-<pre><span id="VALgetExtent"><span class="keyword">val</span> getExtent</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_time">t_param_time</a> -> float</code></pre>
-<pre><span id="VALgetRatio"><span class="keyword">val</span> getRatio</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_time">t_param_time</a> -> float</code></pre>
-<pre><span id="VALgetBase"><span class="keyword">val</span> getBase</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a> -> <a href="JeuCP2.html#TYPEt_point">t_point</a></code></pre>
-<pre><span id="VALgetDilat"><span class="keyword">val</span> getDilat</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a> -> int</code></pre>
-<pre><span id="VALgetColorArr"><span class="keyword">val</span> getColorArr</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a> -> CPutil.t_color <a href="JeuCP2.html#TYPEt_array">t_array</a></code></pre>
-<pre><span id="VALgetShape"><span class="keyword">val</span> getShape</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> <a href="JeuCP2.html#TYPEt_point">t_point</a> list</code></pre>
-<pre><span id="VALgetXLen"><span class="keyword">val</span> getXLen</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> int</code></pre>
-<pre><span id="VALgetYLen"><span class="keyword">val</span> getYLen</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> int</code></pre>
-<pre><span id="VALgetRotRgtBase"><span class="keyword">val</span> getRotRgtBase</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> <a href="JeuCP2.html#TYPEt_point">t_point</a></code></pre>
-<pre><span id="VALgetRotRgtShape"><span class="keyword">val</span> getRotRgtShape</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> int</code></pre>
-<pre><span id="VALgetRotLftBase"><span class="keyword">val</span> getRotLftBase</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> <a href="JeuCP2.html#TYPEt_point">t_point</a></code></pre>
-<pre><span id="VALgetRotLftShape"><span class="keyword">val</span> getRotLftShape</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> int</code></pre>
-<pre><span id="VALgetX"><span class="keyword">val</span> getX</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> -> int</code></pre>
-<pre><span id="VALgetY"><span class="keyword">val</span> getY</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> -> int</code></pre>
+<pre><span id="VALgetParam"><span class="keyword">val</span> getParam</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> <a href="JeuCP2.html#TYPEt_param">t_param</a></code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetCurShape"><span class="keyword">val</span> getCurShape</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> <a href="JeuCP2.html#TYPEt_cur_shape">t_cur_shape</a></code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetMat"><span class="keyword">val</span> getMat</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> CPutil.t_color CPutil.matrix</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetTime"><span class="keyword">val</span> getTime</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> <a href="JeuCP2.html#TYPEt_param_time">t_param_time</a></code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetMat_szx"><span class="keyword">val</span> getMat_szx</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> int</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetMat_szy"><span class="keyword">val</span> getMat_szy</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> int</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetGraphics"><span class="keyword">val</span> getGraphics</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> <a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a></code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetShapes"><span class="keyword">val</span> getShapes</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param">t_param</a> -> <a href="JeuCP2.html#TYPEt_shape">t_shape</a> <a href="JeuCP2.html#TYPEt_array">t_array</a></code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetInitTime"><span class="keyword">val</span> getInitTime</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_time">t_param_time</a> -> float</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetExtent"><span class="keyword">val</span> getExtent</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_time">t_param_time</a> -> float</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetRatio"><span class="keyword">val</span> getRatio</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_time">t_param_time</a> -> float</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetBase"><span class="keyword">val</span> getBase</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a> -> <a href="JeuCP2.html#TYPEt_point">t_point</a></code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetDilat"><span class="keyword">val</span> getDilat</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a> -> int</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetColorArr"><span class="keyword">val</span> getColorArr</span> : <code class="type"><a href="JeuCP2.html#TYPEt_param_graphics">t_param_graphics</a> -> CPutil.t_color <a href="JeuCP2.html#TYPEt_array">t_array</a></code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetShape"><span class="keyword">val</span> getShape</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> <a href="JeuCP2.html#TYPEt_point">t_point</a> list</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetXLen"><span class="keyword">val</span> getXLen</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> int</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetYLen"><span class="keyword">val</span> getYLen</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> int</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetRotRgtBase"><span class="keyword">val</span> getRotRgtBase</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> <a href="JeuCP2.html#TYPEt_point">t_point</a></code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetRotRgtShape"><span class="keyword">val</span> getRotRgtShape</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> int</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetRotLftBase"><span class="keyword">val</span> getRotLftBase</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> <a href="JeuCP2.html#TYPEt_point">t_point</a></code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetRotLftShape"><span class="keyword">val</span> getRotLftShape</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> -> int</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetX"><span class="keyword">val</span> getX</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> -> int</code></pre><div class="info ">
+get<br>
+</div>
+
+<pre><span id="VALgetY"><span class="keyword">val</span> getY</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> -> int</code></pre><div class="info ">
+get<br>
+</div>
+
 <pre><span id="VALcolor_choice"><span class="keyword">val</span> color_choice</span> : <code class="type">CPutil.t_color <a href="JeuCP2.html#TYPEt_array">t_array</a> -> CPutil.t_color</code></pre>
 <pre><span id="VALcur_shape_choice"><span class="keyword">val</span> cur_shape_choice</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> <a href="JeuCP2.html#TYPEt_array">t_array</a> * int * int * CPutil.t_color <a href="JeuCP2.html#TYPEt_array">t_array</a> -><br>       <a href="JeuCP2.html#TYPEt_cur_shape">t_cur_shape</a></code></pre>
 <pre><span id="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type"><a href="JeuCP2.html#TYPEt_cur_shape">t_cur_shape</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> list * <a href="JeuCP2.html#TYPEt_param">t_param</a> *<br>       CPutil.t_color CPutil.matrix -> bool</code></pre>

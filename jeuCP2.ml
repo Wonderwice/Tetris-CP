@@ -1,10 +1,11 @@
 (** *)
-open CPutil;;
-(* -------------------------- *)
-(* -------------------------- *)
-(*    fonctions utilitaires   *)
-(* -------------------------- *)
-(* -------------------------- *) 
+(* open CPutil;;*)
+(* -------------------------------------------- *)
+(* -------------------------------------------- *)
+(** {%html: <h2> Fonctions utilitaires </h2>%}  *)
+(* -------------------------------------------- *)
+(* -------------------------------------------- *)
+
 (** mywait function is used to slow down some game steps
     {%html: <br> %}
     [x] the number of seconds in which the function is executed*)
@@ -16,11 +17,11 @@ let mywait(x : float) : unit =
 ;;
 
 
-(* --------------------------------- *)
-(* --------------------------------- *)
-(*   Types et fonctions graphique    *)
-(* --------------------------------- *)
-(* --------------------------------- *)
+(* ----------------------------------------------- *)
+(* ----------------------------------------------- *)
+(** {%html: <h2>Types et fonctions graphique</h2>%}*)
+(* ----------------------------------------------- *)
+(* ----------------------------------------------- *)
 
 (** type t_point is the reprensentation of a point on a 2 dimensions space *)
 type t_point = {x : int ; y : int} ;;
@@ -78,7 +79,7 @@ type t_param =
 type t_play = {par : t_param ; cur_shape : t_cur_shape ; mat : t_color matrix};;
 
 
-(* Initialisation de quelques formes et des parametres *)
+(** {%html: <h2> Initialisation de quelques formes et des parametres </h2>%} *)
 
 let init_sh011() : t_shape = 
   {shape = [{x = 0 ; y = 0} ; {x = 1 ; y = 0} ; {x = 2 ; y = 0} ; {x = 3 ; y = 0}] ; 
@@ -217,7 +218,8 @@ let fill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point *t_p
     @param base_pt local origin point
     @param base_draw display space
     @param dilat dilation (length of the square)
-    @param col color of the square *)
+    @param col color of the square
+    @author Alexei *)
 let drawfill_pt_list(l, base_pt, base_draw, dilat, col : t_point list * t_point * t_point * int * t_color) : unit=
   for i = 0 to (len(l)-1)
   do
@@ -236,98 +238,121 @@ let draw_frame(base_draw, size_x, size_y, dilat : t_point * int * int * int) : u
   done
 ;;
 
-(*-------------------------------*)
-(*     Fonction d'extraction     *)
-(*-------------------------------*)
+(* ----------------------------------------------- *)
+(** {%html: <h2>Types et fonctions graphique</h2>%}*)
+(* ----------------------------------------------- *)
 
+(** get *)
 let getParam(play : t_play) : t_param =
   play.par
 ;;
 
+(** get *)
 let getCurShape(play : t_play) : t_cur_shape =
   play.cur_shape
 ;;
 
+(** get *)
 let getMat(play : t_play) : t_color matrix =
   play.mat
 ;;
 
+(** get *)
 let getTime(prm : t_param) : t_param_time =
   prm.time
 ;;
 
+(** get *)
 let getMat_szx(prm : t_param) : int =
   prm.mat_szx
 ;;
 
+(** get *)
 let getMat_szy(prm : t_param) : int =
   prm.mat_szy
 ;;
 
+(** get *)
 let getGraphics(prm : t_param) : t_param_graphics =
   prm.graphics
 ;;
 
+(** get *)
 let getShapes(prm : t_param) : t_shape t_array =
   prm.shapes
 ;;
 
+(** get *)
 let getInitTime(time : t_param_time) : float =
   time.init
 ;;
 
+(** get *)
 let getExtent(time : t_param_time) : float =
   time.extent
 ;;
 
+(** get *)
 let getRatio(time : t_param_time) : float =
   time.ratio
 ;;
 
+(** get *)
 let getBase(graphics : t_param_graphics) : t_point =
   graphics.base
 ;;
 
+(** get *)
 let getDilat(graphics : t_param_graphics) : int =
   graphics.dilat
 ;;
 
+(** get *)
 let getColorArr(graphics : t_param_graphics) : t_color t_array =
   graphics.color_arr
 ;;
 
+(** get *)
 let getShape(shape : t_shape) : t_point list =
   shape.shape
 ;;
 
+(** get *)
 let getXLen(shape : t_shape) : int =
   shape.x_len
 ;;
 
+(** get *)
 let getYLen(shape : t_shape) : int =
   shape.y_len
 ;;
 
+(** get *)
 let getRotRgtBase(shape : t_shape) : t_point  =
   shape.rot_rgt_base
 ;;
 
+(** get *)
 let getRotRgtShape(shape : t_shape) : int =
   shape.rot_rgt_shape
 ;;
 
+(** get *)
 let getRotLftBase(shape : t_shape) : t_point =
   shape.rot_lft_base
 ;;
 
+(** get *)
 let getRotLftShape(shape : t_shape) : int =
   shape.rot_lft_shape
 ;;
 
+(** get *)
 let getX(point : t_point) : int =
   point.x
 ;;
 
+(** get *)
 let getY(point : t_point) : int =
   point.y
 ;;
