@@ -1,5 +1,4 @@
 (** *)
-open CPutil;;
 (* -------------------------------------------- *)
 (* -------------------------------------------- *)
 (** {%html: <h2> Fonctions utilitaires </h2>%}  *)
@@ -306,6 +305,25 @@ let draw_frame(base_draw, size_x, size_y, dilat : t_point * int * int * int) : u
   done
 ;;
 
+(** affiche la zone d'affichage après qu'elle est été nettoyée
+    @author Alexei *)
+let draw_matrix(cur, param, mymat : t_cur_shape * t_param * t_color matrix) : unit = 
+  let x : int = param.mat_szx
+  and y : int = param.mat_szy
+  and base_draw : t_point = param.graphics.base in
+  (
+    clear_graph();
+    draw_frame(base_draw, x, y, param.graphics.dilat);
+  for i  = 0 to y - 1
+  do
+    for j = 0 to x - 1
+    do
+      draw_absolute_pt({x = j; y = i}, base_draw, param.graphics.dilat, mymat.(i).(j)) 
+    done
+  done
+  )
+;;
+
 (* ----------------------------------------------- *)
 (** {%html: <h2>Types et fonctions graphique</h2>%}*)
 (* ----------------------------------------------- *)
@@ -470,8 +488,8 @@ let rec insert(cur, shape, param, mymat : t_cur_shape * t_point list * t_param *
     let my_point : t_point = fst(shape) in
     if mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) = white
     then
-    (
-      drawfill_pt_list(param.shapes.value.(!(cur.shape)).shape, !(cur.base), param.graphics.base, param.graphics.dilat, !(cur.color));
+      (
+      drawfill_relative_pt(my_point, !(cur.base), param.graphics.base, param.graphics.dilat, !(cur.color));
       insert(cur, rem_fst(shape), param, mymat)
     )
     else false
@@ -561,7 +579,12 @@ let move_right(pl : t_play) : unit =
 let move_down(pl : t_play) : bool =
     let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x; y = !(pl.cur_shape.base).y - 1}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
       if is_free_move(!(cur_shape.base), pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.mat, pl.par)
-      then insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat)
+      then
+        (
+          draw_matrix(cur_shape, pl.par, pl.mat);
+          insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat)
+        )
+        
       else false
 ;;
 
@@ -672,23 +695,22 @@ let clear_play(pl : t_play) : unit =
 (** final_insert_aux is the auxiliary recursive function associated with final_insert
     @author Alexei *)
 
-let rec final_insert_aux(pl, my_point_list, mymat, cur : t_play * t_point list * t_color matrix * t_cur_shape) : bool =
+let rec final_insert_aux(pl, my_point_list, mymat, cur : t_play * t_point list * t_color matrix * t_cur_shape) : unit =
   if isempty(my_point_list)
-  then true
+  then ()
   else
     let my_point : t_point = fst(my_point_list) in
     if mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) = white
     then
       (mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) <- !(cur.color);
        final_insert_aux(pl, rem_fst(my_point_list), mymat, cur))
-       else false
 ;;
 
 (** final_insert "freezes" the current form, described by the form description cur and
     the list of shape points; in other words, the shape is inserted into the matrix
     @author Alexei *)
 
-let final_insert(pl : t_play) : bool =
+let final_insert(pl : t_play) : unit =
   final_insert_aux(pl, pl.par.shapes.value.(!(pl.cur_shape.shape)).shape, pl.mat, pl.cur_shape)
 ;;
 

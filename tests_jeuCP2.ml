@@ -1,5 +1,3 @@
-open CPutil;;
-open JeuCP2;;
 (** *)
 let read_test_result() : string =
   let result : string ref = ref "" and the_end : bool ref = ref false in
@@ -13,6 +11,17 @@ let read_test_result() : string =
   )
 ;;
 
+let display_test_frame(dilat : int) : unit =
+  let x : int ref = ref 0
+  and y : int ref = ref 0 in
+  for i = 0 to 750/dilat (*permet d'obtenir combien de carré tracer; 750 car c'est la taille de la fenêtre graphique *)
+  do
+    x := !x + dilat;
+    y := !y + dilat;
+    fill_rect(!x - 5, !y - 5, 10,10)
+  done
+;;
+
 let test_draw_absolute_pt_functional(status : t_test_status) : unit =
   let test_step : t_test_step =  test_start(status,"draw_absolute_pt_functional") 
   and p : t_point = {x = 0; y = 0}
@@ -22,6 +31,7 @@ let test_draw_absolute_pt_functional(status : t_test_status) : unit =
   and result : string ref = ref "" in
   (
     clear_graph();
+    display_test_frame(dilat);
     let test_result : unit t_test_result = test_exec(test_step, draw_absolute_pt, (p, base_draw, dilat,col)) in
     (
       if test_is_success(test_result)
@@ -47,6 +57,7 @@ let test_fill_absolute_pt_functional(status : t_test_status) : unit =
   and result : string ref = ref "" in
   (
     clear_graph();
+    display_test_frame(dilat);
     let test_result : unit t_test_result = test_exec(test_step, fill_absolute_pt, (p, base_draw, dilat,col)) in
     (
       if test_is_success(test_result)
@@ -72,6 +83,7 @@ let test_drawfill_absolute_pt_functional(status : t_test_status) : unit =
   and result : string ref = ref "" in
   (
     clear_graph();
+    display_test_frame(dilat);
     let test_result : unit t_test_result = test_exec(test_step, drawfill_absolute_pt, (p, base_draw, dilat,col)) in
     (
       if test_is_success(test_result)
@@ -98,6 +110,7 @@ let test_draw_relative_pt_functional(status : t_test_status) : unit =
   and result : string ref = ref "" in
   (
     clear_graph();
+    display_test_frame(dilat);
     let test_result : unit t_test_result = test_exec(test_step, draw_relative_pt, (p, base_point, base_draw, dilat,col)) in
     (
       if test_is_success(test_result)
@@ -124,6 +137,7 @@ let test_fill_relative_pt_functional(status : t_test_status) : unit =
   and result : string ref = ref "" in
   (
     clear_graph();
+    display_test_frame(dilat);
     let test_result : unit t_test_result = test_exec(test_step, fill_relative_pt, (p, base_point, base_draw, dilat,col)) in
     (
       if test_is_success(test_result)
@@ -150,6 +164,7 @@ let test_drawfill_relative_pt_functional(status : t_test_status) : unit =
   and result : string ref = ref "" in
   (
     clear_graph();
+    display_test_frame(dilat);
     let test_result : unit t_test_result = test_exec(test_step, drawfill_relative_pt, (p, base_point, base_draw, dilat,col)) in
     (
       if test_is_success(test_result)
@@ -176,6 +191,7 @@ let test_draw_pt_list_functional(status : t_test_status) : unit =
   and result : string ref = ref "" in
   (
     clear_graph();
+    display_test_frame(dilat);
     let test_result : unit t_test_result = test_exec(test_step, draw_pt_list, (p_list, base_point, base_draw, dilat,col)) in
     (
       if test_is_success(test_result)
@@ -202,6 +218,7 @@ let test_fill_pt_list_functional(status : t_test_status) : unit =
   and result : string ref = ref "" in
   (
     clear_graph();
+    display_test_frame(dilat);
     let test_result : unit t_test_result = test_exec(test_step, fill_pt_list, (p_list, base_point, base_draw, dilat,col)) in
     (
       if test_is_success(test_result)
@@ -228,6 +245,7 @@ let test_drawfill_pt_list_functional(status : t_test_status) : unit =
   and result : string ref = ref "" in
   (
     clear_graph();
+    display_test_frame(dilat);
     let test_result : unit t_test_result = test_exec(test_step, drawfill_pt_list, (p_list, base_point, base_draw, dilat,col)) in
     (
       if test_is_success(test_result)
