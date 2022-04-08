@@ -296,12 +296,12 @@ let draw_frame(base_draw, size_x, size_y, dilat : t_point * int * int * int) : u
   (* -1 est utilisé au lieu de 0 pour eviter la superposition avec les blocs *)
   for x = -1 to size_x
   do
-    fill_absolute_pt({x = x ; y = -1}, base_draw, dilat, black)    
+    drawfill_absolute_pt({x = x ; y = -1}, base_draw, dilat, black)    
   done;
   for y = -1 to size_y
   do
-    fill_absolute_pt({x = size_x ; y = y}, base_draw, dilat, black);
-    fill_absolute_pt({x = -1 ; y = y}, base_draw, dilat, black)
+    drawfill_absolute_pt({x = size_x ; y = y}, base_draw, dilat, black);
+    drawfill_absolute_pt({x = -1 ; y = y}, base_draw, dilat, black)
   done
 ;;
 
@@ -314,13 +314,13 @@ let draw_matrix(cur, param, mymat : t_cur_shape * t_param * t_color matrix) : un
   (
     clear_graph();
     draw_frame(base_draw, x, y, param.graphics.dilat);
-  for i  = 0 to y - 1
-  do
-    for j = 0 to x - 1
+    for i  = 0 to y - 1
     do
-      draw_absolute_pt({x = j; y = i}, base_draw, param.graphics.dilat, mymat.(i).(j)) 
+      for j = 0 to x - 1
+      do
+        draw_absolute_pt({x = j; y = i}, base_draw, param.graphics.dilat, mymat.(i).(j)) 
+      done
     done
-  done
   )
 ;;
 
@@ -452,7 +452,6 @@ let getY(point : t_point) : int =
 (** color_choice  is a function that allows you to randomly choose a color
     @param t is a color array from which the colors are chosen
     @author Alexei and doc Styven *)
-
 let color_choice(t : t_color t_array) : t_color =
   let rand_color : int = rand_int(0, t.len-1) in
   t.value.(rand_color)
@@ -464,7 +463,6 @@ let color_choice(t : t_color t_array) : t_color =
     @param mat_szy is the dimension of the matrix that corresponds to the workspace on the y axis
     @param color_arr is the color chart available
     @author Loan and doc Styven *)
-
 let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int * int * t_color t_array) : t_cur_shape =
   let rand_shape : int = rand_int(0, shapes.len - 1) in
   let rand_x : int = rand_int(0, mat_szx - shapes.value.(rand_shape).x_len)
@@ -480,13 +478,12 @@ let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int
     @param param describes game settings
     @param mymat describes the workspace
     @author Styven and doc Styven *)
-
 let rec insert(cur, shape, param, mymat : t_cur_shape * t_point list * t_param * t_color matrix) : bool=
   if isempty(shape)
   then true
   else
     let my_point : t_point = fst(shape) in
-    if mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) = white
+    if mymat.(!(cur.base).y + my_point.y).(!(cur.base).x + my_point.x) = white
     then
       (
       drawfill_relative_pt(my_point, !(cur.base), param.graphics.base, param.graphics.dilat, !(cur.color));
@@ -501,7 +498,6 @@ let rec insert(cur, shape, param, mymat : t_cur_shape * t_point list * t_param *
     — draws the frame of the display space;
     — results in the game description thus defined.
     @author Nicolas and doc Styven *)
-
 let init_play() : t_play =
     let prm : t_param = init_param() in
     let play : t_play = { par = prm; cur_shape = cur_shape_choice( prm.shapes,prm.mat_szx, prm.mat_szy, prm.graphics.color_arr); mat = mat_make(prm.mat_szy, prm.mat_szx, white)}
@@ -528,7 +524,6 @@ let init_play() : t_play =
     @param p corresponds to the coordinates of a basis point
     @param param matches game settings
     @author Alexei and doc Styven *)
-
 let valid_matrix_point(p, param : t_point * t_param ) : bool =
   (p.x >= 0 && p.x <= param.mat_szx - 1) && (p.y >= 0 && p.y <= param.mat_szy -1)
 ;;
@@ -540,58 +535,69 @@ let valid_matrix_point(p, param : t_point * t_param ) : bool =
     @param mymat describes the workspace
     @param param matches game settings
     @author Alexei and doc Styven *)
-
 let rec is_free_move(p, shape, mymat,param :t_point * t_point list * t_color matrix * t_param) : bool =
   if isempty(shape)
   then true
   else
       let temp_point : t_point = fst(shape) in
       if  valid_matrix_point({x = p.x + temp_point.x; y = p.y + temp_point.y}, param)
-      then  is_free_move(p, rem_fst(shape), mymat, param)
+      then is_free_move(p, rem_fst(shape), mymat, param)
       else false
 ;;
 
 (** move_left move, if possible of the current form of a square on the left
     @param pl is used to represent game information
     @author Styven and doc Styven *)
-
 let move_left(pl : t_play) : unit =
   let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x - 1; y = !(pl.cur_shape.base).y}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
-  if insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat)
-  then ()
+  if is_free_move(!(cur_shape.base), pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.mat, pl.par)
+  then
+    (
+      draw_matrix(cur_shape, pl.par, pl.mat);
+      insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat);
+      pl.cur_shape.base := !(cur_shape.base);
+      pl.cur_shape.shape := !(cur_shape.shape);
+      pl.cur_shape.color := !(cur_shape.color);
+    )
 ;;
 
 (** move_right move, if possible of the current form of a square on the right
     @param pl is used to represent game information
     @author Alexei and doc Styven *)
-
 let move_right(pl : t_play) : unit =
     let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x + 1; y = !(pl.cur_shape.base).y - 1}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
-    if insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat)
-    then ()
+    if is_free_move(!(cur_shape.base), pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.mat, pl.par)
+    then
+      (
+        draw_matrix(cur_shape, pl.par, pl.mat);
+        insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat);
+        pl.cur_shape.base := !(cur_shape.base);
+        pl.cur_shape.shape := !(cur_shape.shape);
+        pl.cur_shape.color := !(cur_shape.color);
+      )
 ;;
 
 (** move_down move, if possible of the current shape one box down (the Boolean result indicates whether the
     move has been made)
     @param pl is used to represent game information
     @author Alexei and doc Styven *)
-
 let move_down(pl : t_play) : bool =
     let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x; y = !(pl.cur_shape.base).y - 1}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
       if is_free_move(!(cur_shape.base), pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.mat, pl.par)
       then
         (
-          draw_matrix(cur_shape, pl.par, pl.mat);
-          insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat)
+           draw_matrix(cur_shape, pl.par, pl.mat);
+           pl.cur_shape.base := !(cur_shape.base);
+           pl.cur_shape.shape := !(cur_shape.shape);
+           pl.cur_shape.color := !(cur_shape.color);
+          insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat);
         )
-        
       else false
 ;;
 
 (** rotate_right carry out, if possible, a rotate the current shape to the right
     @param pl is used to represent game information
     @author ? *)
-
 let rotate_right(pl : t_play) : unit =
   ()
 ;;
@@ -599,7 +605,6 @@ let rotate_right(pl : t_play) : unit =
 (** rotate_left carry out, if possible, a rotate the current shape to the left
     @param pl is used to represent game information
     @author ? *)
-
 let rotate_left(pl : t_play) : unit =
   ()
 ;;
@@ -608,7 +613,6 @@ let rotate_left(pl : t_play) : unit =
     or being blocked by a previously fixed form
     @param pl is used to represent game information
     @author Nicolas and doc Styven *)
-
 let move_at_bottom(pl : t_play) : unit =
   let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x; y = !(pl.cur_shape.base).y - 1}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
   while (!(cur_shape.base).y <> 0 || insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat))
@@ -624,7 +628,6 @@ let move_at_bottom(pl : t_play) : unit =
     @param pl is used to represent game information
     @param dir  is used to associate a key with a movement
     @author doc Styven *)
-
 let move(pl, dir : t_play * char) : bool = 
   (
   if dir = 't'
@@ -654,7 +657,6 @@ let move(pl, dir : t_play * char) : bool =
     @param y  is the ordinate of the points of the column
     @param mat_szx is the length of a row of the matrix
     @author Loan and doc Styven *)
-
 let is_column_full(mymat, y, mat_szx : t_color matrix * int * int) : bool =
   let is_full : bool ref = ref true in
   for i = 0 to mat_szx - 1
@@ -671,7 +673,6 @@ let is_column_full(mymat, y, mat_szx : t_color matrix * int * int) : bool =
     @param szx and @param szy are the dimensions of the matrix
     @param par matches game settings
     @author Alexei and doc Syven *)
-
 let decal(mymat, y, szx, szy, par : t_color matrix * int * int * int * t_param) : unit =
   for i = 0 to szy
   do
@@ -683,7 +684,6 @@ let decal(mymat, y, szx, szy, par : t_color matrix * int * int * int * t_param) 
 (** clear_play “cleans” the workspace; she deletes all "lines" solid
     @param pl is used to represent game information
     @author Styven and doc Styven *)
-
 let clear_play(pl : t_play) : unit =
   for i = 0 to pl.par.mat_szy
   do
@@ -694,24 +694,24 @@ let clear_play(pl : t_play) : unit =
 
 (** final_insert_aux is the auxiliary recursive function associated with final_insert
     @author Alexei *)
-
-let rec final_insert_aux(pl, my_point_list, mymat, cur : t_play * t_point list * t_color matrix * t_cur_shape) : unit =
+let rec final_insert_aux(cur, my_point_list, mymat, pl : t_cur_shape * t_point list * t_color matrix * t_play) : unit =
   if isempty(my_point_list)
   then ()
   else
     let my_point : t_point = fst(my_point_list) in
-    if mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) = white
+    if mymat.(!(cur.base).y + my_point.y).((!(cur.base).x + my_point.x)) = white
     then
-      (mymat.((!(cur.base).y + my_point.y) - 1).((!(cur.base).x + my_point.x)) <- !(cur.color);
-       final_insert_aux(pl, rem_fst(my_point_list), mymat, cur))
+      (
+        mymat.(!(cur.base).y + my_point.y).((!(cur.base).x + my_point.x)) <- !(cur.color);
+        final_insert_aux(cur, rem_fst(my_point_list), mymat, pl)
+      )
 ;;
 
 (** final_insert "freezes" the current form, described by the form description cur and
     the list of shape points; in other words, the shape is inserted into the matrix
     @author Alexei *)
-
 let final_insert(pl : t_play) : unit =
-  final_insert_aux(pl, pl.par.shapes.value.(!(pl.cur_shape.shape)).shape, pl.mat, pl.cur_shape)
+  final_insert_aux(pl.cur_shape, pl.par.shapes.value.(!(pl.cur_shape.shape)).shape, pl.mat, pl)
 ;;
 
 (** final_newstep performs the last phase of a step of game. It tests if the current form can still move. 
@@ -720,11 +720,17 @@ let final_insert(pl : t_play) : unit =
     In any case, the boolean result of the function indicates whether the game should stop.
     @param pl is used to represent game information
     @author Nicolas and Alexei and doc Loan *)
-
 let final_newstep(pl : t_play) : bool =
-  let new_cur_shape : t_cur_shape = cur_shape_choice(pl.par.shapes, pl.par.mat_szx, pl.par.mat_szy, pl.par.graphics.color_arr) in
-  if is_free_move(!(pl.cur_shape.base),pl.par.shapes.value.(!(pl.cur_shape.shape)).shape,pl.mat, pl.par)
-  then !(pl.cur_shape.base).y = pl.par.mat_szy
+  let new_cur_shape : t_cur_shape = cur_shape_choice(pl.par.shapes, pl.par.mat_szx, pl.par.mat_szy, pl.par.graphics.color_arr)
+  and the_end : bool = !(pl.cur_shape.base).y == pl.par.mat_szy in
+  if not(is_free_move(!(pl.cur_shape.base),pl.par.shapes.value.(!(pl.cur_shape.shape)).shape,pl.mat, pl.par)) && not((fst(pl.par.shapes.value.(!(pl.cur_shape.shape)).shape)).y - pl.par.shapes.value.(!(pl.cur_shape.shape)).y_len < 0)
+  then
+    (
+      pl.cur_shape.base := !(new_cur_shape.base);
+      pl.cur_shape.shape := !(new_cur_shape.shape);
+      pl.cur_shape.color := !(new_cur_shape.color);
+      the_end
+    )
   else
     (
       final_insert(pl);
@@ -732,7 +738,7 @@ let final_newstep(pl : t_play) : bool =
       pl.cur_shape.base := !(new_cur_shape.base);
       pl.cur_shape.shape := !(new_cur_shape.shape);
       pl.cur_shape.color := !(new_cur_shape.color);
-      !(pl.cur_shape.base).y = pl.par.mat_szy
+      the_end
     )
 ;;
 
@@ -751,7 +757,6 @@ let final_newstep(pl : t_play) : bool =
     possibly entered corresponds to a displacement of the shape at the bottom of the workspace.
     If so, the command is executed, otherwise the shape moves one "line" down. If the
     shape can no longer move, the final_newstep function is applied *)
-
 let newstep(pl, new_t, t, dt : t_play * float ref * float * float) : bool = 
   let the_end : bool ref = ref (!new_t -. t > dt) and dec : bool ref = ref false in
   let dir : char ref = ref 'x' and notmove : bool ref = ref false in
@@ -782,9 +787,7 @@ let newstep(pl, new_t, t, dt : t_play * float ref * float * float) : bool =
 (* -------------------------------------- *)
 (* -------------------------------------- *)
 
-(** jeuCP2 is a function which is essentially a loop making it possible to chain the stages of the game, and the management
-acceleration *)
-
+(** jeuCP2 is a function which is essentially a loop making it possible to chain the stages of the game, and the management acceleration *)
 let jeuCP2() : unit =
   let pl : t_play = init_play() in
   let t : float ref = ref (Sys.time()) and new_t : float ref = ref (Sys.time()) in
