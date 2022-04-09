@@ -371,6 +371,7 @@ init_shapes is an array of length 3 that groups the 3 available shapes<br>
 
 <pre><span id="VALinit_color"><span class="keyword">val</span> init_color</span> : <code class="type">unit -> CPutil.t_color <a href="JeuCP2.html#TYPEt_array">t_array</a></code></pre><div class="info ">
 init_color is an array of length 7 containing the available colors<br>
+<b>Author(s):</b> doc Styven<br>
 </div>
 
 <pre><span id="VALinit_param"><span class="keyword">val</span> init_param</span> : <code class="type">unit -> <a href="JeuCP2.html#TYPEt_param">t_param</a></code></pre><div class="info ">
@@ -469,12 +470,17 @@ Draws multiples full squares and their outlines wich are referenced in the l t_p
 <code>size_y</code> : is for the y lenght<br>
 <code>size_x</code> : is for the x lenght<br>
 <code>base_draw</code> : draws display space</div>
+
+<pre><span id="VALdraw_matrix"><span class="keyword">val</span> draw_matrix</span> : <code class="type"><a href="JeuCP2.html#TYPEt_cur_shape">t_cur_shape</a> * <a href="JeuCP2.html#TYPEt_param">t_param</a> * CPutil.t_color CPutil.matrix -> unit</code></pre><div class="info ">
+affiche la zone d'affichage après qu'elle est été nettoyée<br>
+<b>Author(s):</b> Alexei<br>
+</div>
 <br>
 <h2>Types et fonctions graphique</h2><br>
 <br>
 <h3>Fonction d'extraction</h3><br>
 <br>
-sera ajout� � chaque fonction, pour toute fonction d'extraction author Alexei<br>
+sera ajouté à chaque fonction, pour toute fonction d'extraction author Alexei<br>
 
 <pre><span id="VALgetParam"><span class="keyword">val</span> getParam</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> <a href="JeuCP2.html#TYPEt_param">t_param</a></code></pre><div class="info ">
 get<br>
@@ -571,19 +577,36 @@ get<br>
 <h3>Fonction d'affichage</h3><br>
 
 <pre><span id="VALcolor_choice"><span class="keyword">val</span> color_choice</span> : <code class="type">CPutil.t_color <a href="JeuCP2.html#TYPEt_array">t_array</a> -> CPutil.t_color</code></pre><div class="info ">
-<b>Author(s):</b> Alexei<br>
+color_choice  is a function that allows you to randomly choose a color<br>
+<b>Author(s):</b> Alexei and doc Styven<br>
 </div>
 
 <pre><span id="VALcur_shape_choice"><span class="keyword">val</span> cur_shape_choice</span> : <code class="type"><a href="JeuCP2.html#TYPEt_shape">t_shape</a> <a href="JeuCP2.html#TYPEt_array">t_array</a> * int * int * CPutil.t_color <a href="JeuCP2.html#TYPEt_array">t_array</a> -><br>       <a href="JeuCP2.html#TYPEt_cur_shape">t_cur_shape</a></code></pre><div class="info ">
-<b>Author(s):</b> Loan<br>
+cur_shape_choice is a function that returns as value, the randomly chosen shape as well as its color and its position<br>
+<b>Author(s):</b> Loan and doc Styven<br>
 </div>
+<div class="param_info"><code class="code">(shapes,mat_szx,mat_szy,color_arr)</code> : <code>color_arr</code> : is the color chart available<br>
+<code>mat_szy</code> : is the dimension of the matrix that corresponds to the workspace on the y axis<br>
+<code>mat_szx</code> : is the dimension of the matrix that corresponds to the workspace on the x axis<br>
+<code>shapes</code> : is an array made up of the shapes available in the game</div>
 
 <pre><span id="VALinsert"><span class="keyword">val</span> insert</span> : <code class="type"><a href="JeuCP2.html#TYPEt_cur_shape">t_cur_shape</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> list * <a href="JeuCP2.html#TYPEt_param">t_param</a> *<br>       CPutil.t_color CPutil.matrix -> bool</code></pre><div class="info ">
-<b>Author(s):</b> Styven<br>
+insert performs the insertion of the described form in the display space. The result of the function is a boolean whose
+    value is true if the shape can be inserted without "colliding" with a shape earlier, and false otherwise<br>
+<b>Author(s):</b> Styven and doc Styven<br>
 </div>
+<div class="param_info"><code class="code">(cur,shape,param,mymat)</code> : <code>mymat</code> : describes the workspace<br>
+<code>param</code> : describes game settings<br>
+<code>shape</code> : contains the coordinates of the points of the abstract shape that remain to be tested and displayed<br>
+<code>cur</code> : allow in particular to know the base point of the shape as well as its color</div>
 
 <pre><span id="VALinit_play"><span class="keyword">val</span> init_play</span> : <code class="type">unit -> <a href="JeuCP2.html#TYPEt_play">t_play</a></code></pre><div class="info ">
-<b>Author(s):</b> Nicolas<br>
+init_play carries out the initialization of the game, i.e.:
+    — initialize game settings and workspace;
+    — chooses and inserts the first concrete form;
+    — draws the frame of the display space;
+    — results in the game description thus defined.<br>
+<b>Author(s):</b> Nicolas and doc Styven<br>
 </div>
 <br>
 <h2> Deplacements et controle des deplacements</h2><br>
@@ -591,61 +614,124 @@ get<br>
 <h3>Choix des deplacements suivant le caractere saisi</h3><br>
 
 <pre><span id="VALvalid_matrix_point"><span class="keyword">val</span> valid_matrix_point</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_param">t_param</a> -> bool</code></pre><div class="info ">
-<b>Author(s):</b> Alexei<br>
+valid_matrix_point tests if a point p is valid with respect to the dimensions of the workspace<br>
+<b>Author(s):</b> Alexei and doc Styven<br>
 </div>
+<div class="param_info"><code class="code">(p,param)</code> : <code>param</code> : matches game settings<br>
+<code>p</code> : corresponds to the coordinates of a basis point</div>
 
 <pre><span id="VALis_free_move"><span class="keyword">val</span> is_free_move</span> : <code class="type"><a href="JeuCP2.html#TYPEt_point">t_point</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> list * CPutil.t_color CPutil.matrix *<br>       <a href="JeuCP2.html#TYPEt_param">t_param</a> -> bool</code></pre><div class="info ">
-<b>Author(s):</b> Alexei<br>
+is_free_move tests whether the shape described by the base point p and
+    the list of shape points of an abstract shape does not collide with an inserted shape previously.<br>
+<b>Author(s):</b> Alexei and doc Styven<br>
 </div>
+<div class="param_info"><code class="code">(p,shape,mymat,param)</code> : <code>param</code> : matches game settings<br>
+<code>mymat</code> : describes the workspace<br>
+<code>shape</code> : contains the coordinates of the points of the abstract shape<br>
+<code>p</code> : corresponds to the coordinates of a basis point</div>
 
 <pre><span id="VALmove_left"><span class="keyword">val</span> move_left</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> unit</code></pre><div class="info ">
-<b>Author(s):</b> Styven<br>
+move_left move, if possible of the current form of a square on the left<br>
+<b>Author(s):</b> Styven and doc Styven<br>
 </div>
 
 <pre><span id="VALmove_right"><span class="keyword">val</span> move_right</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> unit</code></pre><div class="info ">
-<b>Author(s):</b> Alexei<br>
+move_right move, if possible of the current form of a square on the right<br>
+<b>Author(s):</b> Alexei and doc Styven<br>
 </div>
 
 <pre><span id="VALmove_down"><span class="keyword">val</span> move_down</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> bool</code></pre><div class="info ">
-<b>Author(s):</b> Alexei<br>
+move_down move, if possible of the current shape one box down (the Boolean result indicates whether the
+    move has been made)<br>
+<b>Author(s):</b> Alexei and doc Styven<br>
 </div>
 
-<pre><span id="VALrotate_right"><span class="keyword">val</span> rotate_right</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> unit</code></pre>
-<pre><span id="VALrotate_left"><span class="keyword">val</span> rotate_left</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> unit</code></pre>
+<pre><span id="VALrotate_right"><span class="keyword">val</span> rotate_right</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> unit</code></pre><div class="info ">
+rotate_right carry out, if possible, a rotate the current shape to the right<br>
+<b>Author(s):</b> ?<br>
+</div>
+
+<pre><span id="VALrotate_left"><span class="keyword">val</span> rotate_left</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> unit</code></pre><div class="info ">
+rotate_left carry out, if possible, a rotate the current shape to the left<br>
+<b>Author(s):</b> ?<br>
+</div>
+
 <pre><span id="VALmove_at_bottom"><span class="keyword">val</span> move_at_bottom</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> unit</code></pre><div class="info ">
-<b>Author(s):</b> Nicolas<br>
+move_at_bottom move the vertically current form as low as possible, until reaching the bottom of the workspace,
+    or being blocked by a previously fixed form<br>
+<b>Author(s):</b> Nicolas and doc Styven<br>
 </div>
 
-<pre><span id="VALmove"><span class="keyword">val</span> move</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> * char -> bool</code></pre><br>
+<pre><span id="VALmove"><span class="keyword">val</span> move</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> * char -> bool</code></pre><div class="info ">
+move wall lamp the displacement indicated by the character dir. The meaning of a character resulting in the application
+    of an operation is obvious. The character 'v' is used to indicate a displacement of the lowest possible form: in this case, 
+    the operation is not performed by the move function, but by its calling function new_step<br>
+<b>Author(s):</b> doc Styven<br>
+</div>
+<div class="param_info"><code class="code">(pl,dir)</code> : <code>dir</code> : is used to associate a key with a movement<br>
+<code>pl</code> : is used to represent game information</div>
+<br>
 <h2>Suppression des lignes pleines</h2><br>
 
 <pre><span id="VALis_column_full"><span class="keyword">val</span> is_column_full</span> : <code class="type">CPutil.t_color CPutil.matrix * int * int -> bool</code></pre><div class="info ">
-<b>Author(s):</b> Loan<br>
+is_column_full tests if a column of the mymat matrix is ​​"full"<br>
+<b>Author(s):</b> Loan and doc Styven<br>
 </div>
+<div class="param_info"><code class="code">(mymat,y,mat_szx)</code> : <code>mat_szx</code> : is the length of a row of the matrix<br>
+<code>y</code> : is the ordinate of the points of the column<br>
+<code>mymat</code> : describes the workspace</div>
 
 <pre><span id="VALdecal"><span class="keyword">val</span> decal</span> : <code class="type">CPutil.t_color CPutil.matrix * int * int * int * <a href="JeuCP2.html#TYPEt_param">t_param</a> -> unit</code></pre><div class="info ">
-<b>Author(s):</b> Alexei<br>
+decal shifts down the columns of the mymat matrix of ordinates strictly greater than y<br>
+<b>Author(s):</b> Alexei and doc Syven<br>
 </div>
+<div class="param_info"><code class="code">(mymat,y,szx,szy,par)</code> : <code>par</code> : matches game settings<br>
+<code>szy</code> : are the dimensions of the matrix<br>
+<code>szx</code> : and<br>
+<code>y</code> : is the ordinate of the points of the column<br>
+<code>mymat</code> : describes the workspace</div>
 
 <pre><span id="VALclear_play"><span class="keyword">val</span> clear_play</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> unit</code></pre><div class="info ">
-<b>Author(s):</b> Styven<br>
+clear_play “cleans” the workspace; she deletes all "lines" solid<br>
+<b>Author(s):</b> Styven and doc Styven<br>
 </div>
 
-<pre><span id="VALfinal_insert_aux"><span class="keyword">val</span> final_insert_aux</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> list * CPutil.t_color CPutil.matrix *<br>       <a href="JeuCP2.html#TYPEt_cur_shape">t_cur_shape</a> -> bool</code></pre><div class="info ">
+<pre><span id="VALfinal_insert_aux"><span class="keyword">val</span> final_insert_aux</span> : <code class="type"><a href="JeuCP2.html#TYPEt_cur_shape">t_cur_shape</a> * <a href="JeuCP2.html#TYPEt_point">t_point</a> list * CPutil.t_color CPutil.matrix *<br>       <a href="JeuCP2.html#TYPEt_play">t_play</a> -> unit</code></pre><div class="info ">
+final_insert_aux is the auxiliary recursive function associated with final_insert<br>
 <b>Author(s):</b> Alexei<br>
 </div>
 
-<pre><span id="VALfinal_insert"><span class="keyword">val</span> final_insert</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> bool</code></pre><div class="info ">
+<pre><span id="VALfinal_insert"><span class="keyword">val</span> final_insert</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> unit</code></pre><div class="info ">
+final_insert "freezes" the current form, described by the form description cur and
+    the list of shape points; in other words, the shape is inserted into the matrix<br>
 <b>Author(s):</b> Alexei<br>
 </div>
 
 <pre><span id="VALfinal_newstep"><span class="keyword">val</span> final_newstep</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> -> bool</code></pre><div class="info ">
-<b>Author(s):</b> Nicolas et Alexei<br>
+final_newstep performs the last phase of a step of game. It tests if the current form can still move. 
+    If so, the function does nothing, if not, it means the form does not can no longer move. 
+    The form is inserted, the solid "lines" are deleted, a new shape is chosen.
+    In any case, the boolean result of the function indicates whether the game should stop.<br>
+<b>Author(s):</b> Nicolas and Alexei and doc Loan<br>
 </div>
 <br>
-<h2>Une �tape de jeu</h2><br>
+<h2>Une étape de jeu</h2><br>
 
-<pre><span id="VALnewstep"><span class="keyword">val</span> newstep</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> * float Pervasives.ref * float * float -> bool</code></pre><br>
+<pre><span id="VALnewstep"><span class="keyword">val</span> newstep</span> : <code class="type"><a href="JeuCP2.html#TYPEt_play">t_play</a> * float Pervasives.ref * float * float -> bool</code></pre><div class="info ">
+newstep manages a "step" of play. A game step executes within a certain time dt; new_t and t parameters match
+    respectively at the "current time" and at the time at which a new game stage has started.
+    In a first phase, the function tests whether the player has entered a command: if so,
+    the command is taken into account, by calling the move function, the result of which is stored
+    in the mutable variable dec. The variable dir then takes another value, which does not correspond to
+    no move command (here, the value 'x'). The value of dec indicates whether the command
+    possibly entered corresponds to a displacement of the shape at the bottom of the workspace.
+    If so, the command is executed, otherwise the shape moves one "line" down. If the
+    shape can no longer move, the final_newstep function is applied<br>
+</div>
+<br>
 <h2>Fonction principale</h2><br>
 
-<pre><span id="VALjeuCP2"><span class="keyword">val</span> jeuCP2</span> : <code class="type">unit -> unit</code></pre></body></html>
+<pre><span id="VALjeuCP2"><span class="keyword">val</span> jeuCP2</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+jeuCP2 is a function which is essentially a loop making it possible to chain the stages of the game, and the management acceleration<br>
+</div>
+</body></html>

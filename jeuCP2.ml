@@ -318,7 +318,8 @@ let draw_matrix(cur, param, mymat : t_cur_shape * t_param * t_color matrix) : un
     do
       for j = 0 to x - 1
       do
-        draw_absolute_pt({x = j; y = i}, base_draw, param.graphics.dilat, mymat.(i).(j)) 
+        if mymat.(i).(j) <> white
+        then drawfill_absolute_pt({x = j; y = i}, base_draw, param.graphics.dilat, mymat.(i).(j))
       done
     done
   )
@@ -500,7 +501,7 @@ let rec insert(cur, shape, param, mymat : t_cur_shape * t_point list * t_param *
     @author Nicolas and doc Styven *)
 let init_play() : t_play =
     let prm : t_param = init_param() in
-    let play : t_play = { par = prm; cur_shape = cur_shape_choice( prm.shapes,prm.mat_szx, prm.mat_szy, prm.graphics.color_arr); mat = mat_make(prm.mat_szy, prm.mat_szx, white)}
+    let play : t_play = { par = prm; cur_shape = cur_shape_choice(prm.shapes,prm.mat_szx, prm.mat_szy, prm.graphics.color_arr); mat = mat_make(prm.mat_szy, prm.mat_szx, white)}
     in
     (
     if insert(play.cur_shape, play.par.shapes.value.(!(play.cur_shape.shape)).shape, play.par, play.mat)
@@ -565,7 +566,7 @@ let move_left(pl : t_play) : unit =
     @param pl is used to represent game information
     @author Alexei and doc Styven *)
 let move_right(pl : t_play) : unit =
-    let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x + 1; y = !(pl.cur_shape.base).y - 1}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
+    let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x + 1; y = !(pl.cur_shape.base).y}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
     if is_free_move(!(cur_shape.base), pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.mat, pl.par)
     then
       (
@@ -590,7 +591,7 @@ let move_down(pl : t_play) : bool =
            pl.cur_shape.base := !(cur_shape.base);
            pl.cur_shape.shape := !(cur_shape.shape);
            pl.cur_shape.color := !(cur_shape.color);
-          insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat);
+           insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat);
         )
       else false
 ;;
@@ -657,7 +658,7 @@ let move(pl, dir : t_play * char) : bool =
     @param y  is the ordinate of the points of the column
     @param mat_szx is the length of a row of the matrix
     @author Loan and doc Styven *)
-let is_column_full(mymat, y, mat_szx : t_color matrix * int * int) : bool =
+let is_column_full(y, mymat, mat_szx : int * t_color matrix * int) : bool =
   let is_full : bool ref = ref true in
   for i = 0 to mat_szx - 1
   do
@@ -674,10 +675,10 @@ let is_column_full(mymat, y, mat_szx : t_color matrix * int * int) : bool =
     @param par matches game settings
     @author Alexei and doc Syven *)
 let decal(mymat, y, szx, szy, par : t_color matrix * int * int * int * t_param) : unit =
-  for i = 0 to szy
+  for i = 0 to szy-2(* -2 car on ne peut pas réussir à faire ligne pleine sur la dernière*)
   do
-    if i > y
-    then mymat.(i - 1) <- mymat.(i)
+    if i >= y
+    then mymat.(i) <- mymat.(i+1)
   done
 ;;
 
@@ -685,9 +686,9 @@ let decal(mymat, y, szx, szy, par : t_color matrix * int * int * int * t_param) 
     @param pl is used to represent game information
     @author Styven and doc Styven *)
 let clear_play(pl : t_play) : unit =
-  for i = 0 to pl.par.mat_szy
+  for i = 0 to pl.par.mat_szy - 1
   do
-    if is_column_full(pl.mat, i, pl.par.mat_szx)
+    if is_column_full(i, pl.mat, pl.par.mat_szx)
     then decal(pl.mat, i, pl.par.mat_szx, pl.par.mat_szy, pl.par)
   done
 ;;
@@ -722,16 +723,7 @@ let final_insert(pl : t_play) : unit =
     @author Nicolas and Alexei and doc Loan *)
 let final_newstep(pl : t_play) : bool =
   let new_cur_shape : t_cur_shape = cur_shape_choice(pl.par.shapes, pl.par.mat_szx, pl.par.mat_szy, pl.par.graphics.color_arr)
-  and the_end : bool = !(pl.cur_shape.base).y == pl.par.mat_szy in
-  if not(is_free_move(!(pl.cur_shape.base),pl.par.shapes.value.(!(pl.cur_shape.shape)).shape,pl.mat, pl.par)) && not((fst(pl.par.shapes.value.(!(pl.cur_shape.shape)).shape)).y - pl.par.shapes.value.(!(pl.cur_shape.shape)).y_len < 0)
-  then
-    (
-      pl.cur_shape.base := !(new_cur_shape.base);
-      pl.cur_shape.shape := !(new_cur_shape.shape);
-      pl.cur_shape.color := !(new_cur_shape.color);
-      the_end
-    )
-  else
+  and the_end : bool = !(pl.cur_shape.base).y == pl.par.mat_szy - 1 in
     (
       final_insert(pl);
       clear_play(pl);
