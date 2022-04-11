@@ -18,19 +18,89 @@
 </div>
 <hr width="100%">
 
-<pre><span id="VALread_test_result"><span class="keyword">val</span> read_test_result</span> : <code class="type">unit -> string</code></pre>
-<pre><span id="VALdisplay_test_frame"><span class="keyword">val</span> display_test_frame</span> : <code class="type">int -> unit</code></pre>
-<pre><span id="VALtest_draw_absolute_pt_functional"><span class="keyword">val</span> test_draw_absolute_pt_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre>
-<pre><span id="VALtest_fill_absolute_pt_functional"><span class="keyword">val</span> test_fill_absolute_pt_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre>
-<pre><span id="VALtest_drawfill_absolute_pt_functional"><span class="keyword">val</span> test_drawfill_absolute_pt_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre>
-<pre><span id="VALtest_draw_relative_pt_functional"><span class="keyword">val</span> test_draw_relative_pt_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre>
-<pre><span id="VALtest_fill_relative_pt_functional"><span class="keyword">val</span> test_fill_relative_pt_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre>
-<pre><span id="VALtest_drawfill_relative_pt_functional"><span class="keyword">val</span> test_drawfill_relative_pt_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre>
-<pre><span id="VALtest_draw_pt_list_functional"><span class="keyword">val</span> test_draw_pt_list_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre>
-<pre><span id="VALtest_fill_pt_list_functional"><span class="keyword">val</span> test_fill_pt_list_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre>
-<pre><span id="VALtest_drawfill_pt_list_functional"><span class="keyword">val</span> test_drawfill_pt_list_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre>
-<pre><span id="VALtest_draw_frame_functional"><span class="keyword">val</span> test_draw_frame_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><br>
-Tests if the outcome of the function getParam is extracted from the type t_play<br>
+<pre><span id="VALread_test_result"><span class="keyword">val</span> read_test_result</span> : <code class="type">unit -> string</code></pre><div class="info ">
+read_test_result is an input control function<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
 
-<pre><span id="VALtest_getParam_functional"><span class="keyword">val</span> test_getParam_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre>
+<pre><span id="VALdisplay_test_frame"><span class="keyword">val</span> display_test_frame</span> : <code class="type">int -> unit</code></pre><div class="info ">
+display_test_frame is used to make an graphic anchor during the tests<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_draw_absolute_pt_functional"><span class="keyword">val</span> test_draw_absolute_pt_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_draw_absolute_pt_functional test the correct printing of an unfilled square with correct parameters<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_fill_absolute_pt_functional"><span class="keyword">val</span> test_fill_absolute_pt_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_fill_absolute_pt_functional test the correct printing of a filled square with correct parameters<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_drawfill_absolute_pt_functional"><span class="keyword">val</span> test_drawfill_absolute_pt_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_drawfill_absolute_pt_functional test the correct printing of a filled square with contour and with correct parameters<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_draw_relative_pt_functional"><span class="keyword">val</span> test_draw_relative_pt_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_draw_relative_pt_functional test the correct printing of an unfilled square which have a relative position, with correct parameters<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_fill_relative_pt_functional"><span class="keyword">val</span> test_fill_relative_pt_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_fill_relative_pt_functional test the correct printing of a filled square which have a relative position, with correct parameters<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_drawfill_relative_pt_functional"><span class="keyword">val</span> test_drawfill_relative_pt_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_drawfill_relative_pt_functional test the correct printing of a filled square with contour which have a relative position, with correct parameters<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_draw_pt_list_functional"><span class="keyword">val</span> test_draw_pt_list_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_draw_pt_list_functional test the correct printing of a list of unfilled square which have a relative position, with correct parameters<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_fill_pt_list_functional"><span class="keyword">val</span> test_fill_pt_list_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_fill_pt_list_functional test the correct printing of a list of filled square which have a relative position, with correct parameters<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_drawfill_pt_list_functional"><span class="keyword">val</span> test_drawfill_pt_list_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_drawfill_pt_list_functional test the correct printing of a list of filled square with contour which have a relative position, with correct parameters<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_draw_frame_functional"><span class="keyword">val</span> test_draw_frame_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_draw_frame_functional test the correct printing of the display frame, with correct parameters<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_getParam_functional"><span class="keyword">val</span> test_getParam_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+Tests if the outcome of the function getParam is extracted from the type t_play<br>
+<b>Author(s):</b> Loan<br>
+</div>
+
+<pre><span id="VALtest_color_choice_functional"><span class="keyword">val</span> test_color_choice_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_color_choice_functional test if the function return a random color in a t_color t_array<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_cur_shape_choice_functional"><span class="keyword">val</span> test_cur_shape_choice_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_cur_shape_choice_functional is used to test if cur_shape_choice return a valid t_cur_shape<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_insert_functional"><span class="keyword">val</span> test_insert_functional</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_insert_functional is used to test if insert display correctly the cur_shape when he is valid<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
+<pre><span id="VALtest_insert_structural"><span class="keyword">val</span> test_insert_structural</span> : <code class="type">CPutil.t_test_status -> unit</code></pre><div class="info ">
+test_cur_shape_choice_functional is used to test if insert return false when the cur_shape is on an already used area<br>
+<b>Author(s):</b> Alexeï<br>
+</div>
+
 <pre><span id="VALtest_run"><span class="keyword">val</span> test_run</span> : <code class="type">unit -> unit</code></pre></body></html>

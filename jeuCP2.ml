@@ -4,7 +4,7 @@
 (** {%html: <h2> Fonctions utilitaires </h2>%}  *)
 (* -------------------------------------------- *)
 (* -------------------------------------------- *)
-
+open CPutil;;
 (** mywait function is used to slow down some game steps
     {%html: <br> %}
     [x] the number of seconds in which the function is executed*)
@@ -616,7 +616,7 @@ let rotate_left(pl : t_play) : unit =
     @author Nicolas and doc Styven *)
 let move_at_bottom(pl : t_play) : unit =
   let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x; y = !(pl.cur_shape.base).y - 1}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
-  while (!(cur_shape.base).y <> 0 || insert(cur_shape, pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.par, pl.mat))
+  while (!(cur_shape.base).y <> 0 || is_free_move(!(cur_shape.base), pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.mat, pl.par))
   do
     move_down(pl)
   done;
