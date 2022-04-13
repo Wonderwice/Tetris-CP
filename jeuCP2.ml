@@ -4,7 +4,7 @@
 (** {%html: <h2> Fonctions utilitaires </h2>%}  *)
 (* -------------------------------------------- *)
 (* -------------------------------------------- *)
-open CPutil;;
+(* open CPutil;; *)
 (** mywait function is used to slow down some game steps
     {%html: <br> %}
     [x] the number of seconds in which the function is executed*)
@@ -675,7 +675,7 @@ let is_column_full(y, mymat, mat_szx : int * t_color matrix * int) : bool =
     @param par matches game settings
     @author Alexei and doc Syven *)
 let decal(mymat, y, szx, szy, par : t_color matrix * int * int * int * t_param) : unit =
-  for i = 0 to szy-2(* -2 car on ne peut pas réussir à faire ligne pleine sur la dernière*)
+  for i = 0 to szy - 2(* -2 car on ne peut pas réussir à faire ligne pleine sur la dernière*)
   do
     if i >= y
     then mymat.(i) <- mymat.(i+1)
@@ -700,12 +700,10 @@ let rec final_insert_aux(cur, my_point_list, mymat, pl : t_cur_shape * t_point l
   then ()
   else
     let my_point : t_point = fst(my_point_list) in
-    if mymat.(!(cur.base).y + my_point.y).((!(cur.base).x + my_point.x)) = white
-    then
-      (
-        mymat.(!(cur.base).y + my_point.y).((!(cur.base).x + my_point.x)) <- !(cur.color);
-        final_insert_aux(cur, rem_fst(my_point_list), mymat, pl)
-      )
+    (
+      mymat.(!(cur.base).y + my_point.y).((!(cur.base).x + my_point.x)) <- !(cur.color);
+      final_insert_aux(cur, rem_fst(my_point_list), mymat, pl)
+    )
 ;;
 
 (** final_insert "freezes" the current form, described by the form description cur and
@@ -723,15 +721,20 @@ let final_insert(pl : t_play) : unit =
     @author Nicolas and Alexei and doc Loan *)
 let final_newstep(pl : t_play) : bool =
   let new_cur_shape : t_cur_shape = cur_shape_choice(pl.par.shapes, pl.par.mat_szx, pl.par.mat_szy, pl.par.graphics.color_arr)
+  and cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x; y = !(pl.cur_shape.base).y - 1}; shape = pl.cur_shape.shape; color = pl.cur_shape.color}
   and the_end : bool = !(pl.cur_shape.base).y == pl.par.mat_szy - 1 in
-    (
-      final_insert(pl);
-      clear_play(pl);
-      pl.cur_shape.base := !(new_cur_shape.base);
-      pl.cur_shape.shape := !(new_cur_shape.shape);
-      pl.cur_shape.color := !(new_cur_shape.color);
-      the_end
-    )
+  (
+    if is_free_move(!(cur_shape.base), pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.mat, pl.par) ||(!(pl.cur_shape.base).y = 0 && !(pl.cur_shape.shape) = 1)
+    then
+      (
+        final_insert(pl);
+        clear_play(pl);
+        pl.cur_shape.base := !(new_cur_shape.base);
+        pl.cur_shape.shape := !(new_cur_shape.shape);
+        pl.cur_shape.color := !(new_cur_shape.color)
+      );
+    the_end
+  )
 ;;
 
 (* ----------------------------------- *)
@@ -758,7 +761,7 @@ let newstep(pl, new_t, t, dt : t_play * float ref * float * float) : bool =
       if key_pressed()
       then dir := read_key()
       else () ;
-      dec := move(pl, !dir) ;
+      dec := move(pl, !dir);
       dir := 'x' ; 
       new_t := Sys.time() ;
       the_end := !dec || (!new_t -. t > dt) ;
