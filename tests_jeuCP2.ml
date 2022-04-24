@@ -414,18 +414,19 @@ let test_insert_structural2(status : t_test_status ) : unit =
   let cur : t_cur_shape = cur_shape_choice(shapes, 15, 28, init_color()) in
   let shape : t_point list =  shapes.value.(!(cur.shape)).shape
   and param : t_param = init_param()
-  and mymat : t_color matrix = mat_make(28, 15, white) in
+  and mymat : t_color matrix = mat_make(28, 15, white)
+  and result : string ref = ref "" in
   (
     clear_graph();
     draw_frame({x = 50; y = 50}, 15, 28, 20);
-    !(cur.base).x =  15 - shapes.value.(!(cur.shape).x_len;
+    cur.base := {x = 15 - shapes.value.(!(cur.shape)).x_len; y = 27};
     let test_result : bool t_test_result = test_exec(test_step, insert, (cur, shape, param, mymat)) in
     (
       if test_is_success(test_result)
       then 
         (
           print_newline();
-          print_string("Si vous avez bien un carré ou une barre composé de 4 carrés, et de couleur aléatoire, veuillez entrer : OK sinon KO  ");
+          print_string("Si vous avez bien un carré ou une barre composé de 4 carrés, situé tout à droite, et de couleur aléatoire, veuillez entrer : OK sinon KO  ");
           result := read_test_result();
           assert_equals(test_step, "saisie de l'utilisateur", !result, "OK")
         )

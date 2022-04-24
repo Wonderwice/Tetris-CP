@@ -217,7 +217,7 @@ let drawfill_absolute_pt(p, base_draw, dilat, col : t_point * t_point * int * t_
     @param col color of the outline
     @author Alexei and doc Loan*)
 let draw_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
-    draw_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
+    draw_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x; y = base_draw.y}, dilat, col)
 ;;
 
 (** Draws a square
@@ -227,7 +227,7 @@ let draw_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * 
     @param col color of the square
     @author Alexei and doc Loan*)
 let fill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
-   fill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
+   fill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x; y = base_draw.y}, dilat, col)
 ;;
 
 (** Draws a square fulled by the color square
@@ -237,7 +237,7 @@ let fill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * 
     @param col color of the square
     @author Alexei and doc Loan*)
 let drawfill_relative_pt(p, base_point, base_draw, dilat, col : t_point * t_point * t_point * int * t_color) : unit =
-   drawfill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x + base_point.x; y = base_draw.y + base_point.y}, dilat, col)
+   drawfill_absolute_pt({x = p.x + base_point.x; y = p.y + base_point.y}, {x = base_draw.x; y = base_draw.y}, dilat, col)
 ;;
 
 (** Draws the outlines of multiples squares wich are referenced in the l t_point list
@@ -294,11 +294,11 @@ let rec drawfill_pt_list(list, base_pt, base_draw, dilat, col : t_point list * t
     @author Alexei *)
 let draw_frame(base_draw, size_x, size_y, dilat : t_point * int * int * int) : unit =
   (* -1 est utilisé au lieu de 0 pour eviter la superposition avec les blocs *)
-  for x = -1 to size_x
+  for x = -1 to size_x - 1
   do
     drawfill_absolute_pt({x = x ; y = -1}, base_draw, dilat, black)    
   done;
-  for y = -1 to size_y
+  for y = -1 to size_y - 1
   do
     drawfill_absolute_pt({x = size_x ; y = y}, base_draw, dilat, black);
     drawfill_absolute_pt({x = -1 ; y = y}, base_draw, dilat, black)
@@ -479,7 +479,7 @@ let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int
     @param param describes game settings
     @param mymat describes the workspace
     @author Styven and doc Styven *)
-let rec insert(cur, shape, param, mymat : t_cur_shape * t_point list * t_param * t_color matrix) : bool=
+let rec insert(cur, shape, param, mymat : t_cur_shape * t_point list * t_param * t_color matrix) : bool =
   if isempty(shape)
   then true
   else
@@ -487,9 +487,9 @@ let rec insert(cur, shape, param, mymat : t_cur_shape * t_point list * t_param *
     if mymat.(!(cur.base).y + my_point.y).(!(cur.base).x + my_point.x) = white
     then
       (
-      drawfill_relative_pt(my_point, !(cur.base), param.graphics.base, param.graphics.dilat, !(cur.color));
-      insert(cur, rem_fst(shape), param, mymat)
-    )
+        (drawfill_pt_list(shape, !(cur.base), param.graphics.base, param.graphics.dilat, !(cur.color)));
+        insert(cur, rem_fst(shape), param, mymat)
+      )
     else false
 ;;
 
@@ -542,7 +542,9 @@ let rec is_free_move(p, shape, mymat,param :t_point * t_point list * t_color mat
   else
       let temp_point : t_point = fst(shape) in
       if  valid_matrix_point({x = p.x + temp_point.x; y = p.y + temp_point.y}, param)
-      then is_free_move(p, rem_fst(shape), mymat, param)
+            then if mymat.(temp_point.y + p.y).(temp_point.x + p.x) = white
+                 then is_free_move(p, rem_fst(shape), mymat, param)
+                 else false
       else false
 ;;
 
@@ -550,7 +552,7 @@ let rec is_free_move(p, shape, mymat,param :t_point * t_point list * t_color mat
     @param pl is used to represent game information
     @author Styven and doc Styven *)
 let move_left(pl : t_play) : unit =
-  let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x - 1; y = !(pl.cur_shape.base).y}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
+  let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x - 1; y = !(pl.cur_shape.base).y - 1}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
   if is_free_move(!(cur_shape.base), pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.mat, pl.par)
   then
     (
@@ -566,7 +568,7 @@ let move_left(pl : t_play) : unit =
     @param pl is used to represent game information
     @author Alexei and doc Styven *)
 let move_right(pl : t_play) : unit =
-    let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x + 1; y = !(pl.cur_shape.base).y}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
+    let cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x + 1; y = !(pl.cur_shape.base).y - 1}; shape = pl.cur_shape.shape; color = pl.cur_shape.color} in
     if is_free_move(!(cur_shape.base), pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.mat, pl.par)
     then
       (
@@ -675,23 +677,38 @@ let is_column_full(y, mymat, mat_szx : int * t_color matrix * int) : bool =
     @param par matches game settings
     @author Alexei and doc Syven *)
 let decal(mymat, y, szx, szy, par : t_color matrix * int * int * int * t_param) : unit =
-  for i = 0 to szy - 2(* -2 car on ne peut pas réussir à faire ligne pleine sur la dernière*)
+  for i = y to szy - 2
   do
-    if i >= y
-    then mymat.(i) <- mymat.(i+1)
+    mymat.(i) <- mymat.(i + 1)
   done
+;;
+
+let rec clear_play_aux(pl, i : t_play * int) : unit =
+  if i < 0
+  then ()
+  else
+    if is_column_full(i, pl.mat, pl.par.mat_szx)
+    then
+      (decal(pl.mat, i, pl.par.mat_szx, pl.par.mat_szy, pl.par); clear_play_aux(pl, i-1))
+    else clear_play_aux(pl, i-1)
 ;;
 
 (** clear_play “cleans” the workspace; she deletes all "lines" solid
     @param pl is used to represent game information
     @author Styven and doc Styven *)
 let clear_play(pl : t_play) : unit =
-  for i = 0 to pl.par.mat_szy - 1
+  clear_play_aux(pl,pl.par.mat_szy - 2)
+;;
+
+(*
+let clear_play(pl : t_play) : unit =
+  for i = 0 to pl.par.mat_szy - 2 (*la ligne szy - 1 ne peut être pleine*)
   do
     if is_column_full(i, pl.mat, pl.par.mat_szx)
     then decal(pl.mat, i, pl.par.mat_szx, pl.par.mat_szy, pl.par)
   done
 ;;
+ *)
 
 (** final_insert_aux is the auxiliary recursive function associated with final_insert
     @author Alexei *)
@@ -721,10 +738,9 @@ let final_insert(pl : t_play) : unit =
     @author Nicolas and Alexei and doc Loan *)
 let final_newstep(pl : t_play) : bool =
   let new_cur_shape : t_cur_shape = cur_shape_choice(pl.par.shapes, pl.par.mat_szx, pl.par.mat_szy, pl.par.graphics.color_arr)
-  and cur_shape : t_cur_shape = {base = ref {x = !(pl.cur_shape.base).x; y = !(pl.cur_shape.base).y - 1}; shape = pl.cur_shape.shape; color = pl.cur_shape.color}
   and the_end : bool = !(pl.cur_shape.base).y == pl.par.mat_szy - 1 in
   (
-    if is_free_move(!(cur_shape.base), pl.par.shapes.value.(!(cur_shape.shape)).shape, pl.mat, pl.par) ||(!(pl.cur_shape.base).y = 0 && !(pl.cur_shape.shape) = 1)
+    if is_free_move(!(pl.cur_shape.base), pl.par.shapes.value.(!(pl.cur_shape.shape)).shape, pl.mat, pl.par)
     then
       (
         final_insert(pl);
