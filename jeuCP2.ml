@@ -164,7 +164,7 @@ let init_color() : t_color t_array =
 let init_param() : t_param = 
     {
     time = {init = 1.0 ; extent = 10.0 ; ratio = 0.8} ; 
-    mat_szx = 15 ; mat_szy = 28 ;
+    mat_szx = 10 ; mat_szy = 15;
     graphics = {base = {x = 50 ; y = 50} ; dilat = 20 ; color_arr = init_color()} ; 
     shapes = init_shapes()
     }
@@ -293,12 +293,12 @@ let rec drawfill_pt_list(list, base_pt, base_draw, dilat, col : t_point list * t
     @param dilat dilation (length of the square)
     @author Alexei *)
 let draw_frame(base_draw, size_x, size_y, dilat : t_point * int * int * int) : unit =
-  (* -1 est utilisé au lieu de 0 pour eviter la superposition avec les blocs *)
+  (* -1 en x est utilisé au lieu de 0 pour eviter la superposition avec les blocs *)
   for x = -1 to size_x - 1
   do
     drawfill_absolute_pt({x = x ; y = -1}, base_draw, dilat, black)    
   done;
-  for y = -1 to size_y - 1
+  for y = -1 to size_y - 2
   do
     drawfill_absolute_pt({x = size_x ; y = y}, base_draw, dilat, black);
     drawfill_absolute_pt({x = -1 ; y = y}, base_draw, dilat, black)
@@ -467,7 +467,7 @@ let color_choice(t : t_color t_array) : t_color =
 let cur_shape_choice(shapes, mat_szx, mat_szy, color_arr : t_shape t_array * int * int * t_color t_array) : t_cur_shape =
   let rand_shape : int = rand_int(0, shapes.len - 1) in
   let rand_x : int = rand_int(0, mat_szx - shapes.value.(rand_shape).x_len)
-  and y : int = mat_szy - shapes.value.(rand_shape).y_len
+  and y : int = mat_szy - 2
   and rand_color : int = rand_int(0, color_arr.len -1) in
   {base = ref {x = rand_x; y = y}; shape = ref rand_shape; color = ref color_arr.value.(rand_color)}
 ;;
@@ -677,29 +677,32 @@ let is_column_full(y, mymat, mat_szx : int * t_color matrix * int) : bool =
     @param par matches game settings
     @author Alexei and doc Syven *)
 let decal(mymat, y, szx, szy, par : t_color matrix * int * int * int * t_param) : unit =
-  for i = y to szy - 2
+  for i = y to szy - 3
   do
-    mymat.(i) <- mymat.(i + 1)
-  done
+    for j = 0 to szx - 1
+    do
+      mymat.(i).(j) <- mymat.(i + 1).(j)
+    done
+  done;
 ;;
 
 let rec clear_play_aux(pl, i : t_play * int) : unit =
-  if i < 0
+  if i = pl.par.mat_szy - 2
   then ()
   else
     if is_column_full(i, pl.mat, pl.par.mat_szx)
     then
-      (decal(pl.mat, i, pl.par.mat_szx, pl.par.mat_szy, pl.par); clear_play_aux(pl, i-1))
-    else clear_play_aux(pl, i-1)
+      (decal(pl.mat, i, pl.par.mat_szx, pl.par.mat_szy, pl.par); clear_play_aux(pl, i))
+    else clear_play_aux(pl, i+1)
 ;;
 
 (** clear_play “cleans” the workspace; she deletes all "lines" solid
     @param pl is used to represent game information
     @author Styven and doc Styven *)
 let clear_play(pl : t_play) : unit =
-  clear_play_aux(pl,pl.par.mat_szy - 2)
+  clear_play_aux(pl,0)
 ;;
-
+  
 (*
 let clear_play(pl : t_play) : unit =
   for i = 0 to pl.par.mat_szy - 2 (*la ligne szy - 1 ne peut être pleine*)
@@ -710,24 +713,18 @@ let clear_play(pl : t_play) : unit =
 ;;
  *)
 
-(** final_insert_aux is the auxiliary recursive function associated with final_insert
-    @author Alexei *)
-let rec final_insert_aux(cur, my_point_list, mymat, pl : t_cur_shape * t_point list * t_color matrix * t_play) : unit =
-  if isempty(my_point_list)
-  then ()
-  else
-    let my_point : t_point = fst(my_point_list) in
-    (
-      mymat.(!(cur.base).y + my_point.y).((!(cur.base).x + my_point.x)) <- !(cur.color);
-      final_insert_aux(cur, rem_fst(my_point_list), mymat, pl)
-    )
-;;
-
 (** final_insert "freezes" the current form, described by the form description cur and
     the list of shape points; in other words, the shape is inserted into the matrix
     @author Alexei *)
-let final_insert(pl : t_play) : unit =
-  final_insert_aux(pl.cur_shape, pl.par.shapes.value.(!(pl.cur_shape.shape)).shape, pl.mat, pl)
+let rec final_insert(cur, shape, mymat : t_cur_shape * t_point list * t_color matrix) : t_color matrix =
+  if isempty(shape)
+  then mymat
+  else
+    let my_point : t_point = fst(shape) in
+    (
+      (mymat.(!(cur.base).y + my_point.y).(!(cur.base).x + my_point.x) <- !(cur.color));
+      final_insert(cur, rem_fst(shape), mymat)
+    )
 ;;
 
 (** final_newstep performs the last phase of a step of game. It tests if the current form can still move. 
@@ -738,16 +735,17 @@ let final_insert(pl : t_play) : unit =
     @author Nicolas and Alexei and doc Loan *)
 let final_newstep(pl : t_play) : bool =
   let new_cur_shape : t_cur_shape = cur_shape_choice(pl.par.shapes, pl.par.mat_szx, pl.par.mat_szy, pl.par.graphics.color_arr)
-  and the_end : bool = !(pl.cur_shape.base).y == pl.par.mat_szy - 1 in
+  and the_end : bool = !(pl.cur_shape.base).y == pl.par.mat_szy - 2 in
   (
     if is_free_move(!(pl.cur_shape.base), pl.par.shapes.value.(!(pl.cur_shape.shape)).shape, pl.mat, pl.par)
-    then
+    then 
       (
-        final_insert(pl);
-        clear_play(pl);
+        final_insert(pl.cur_shape,  pl.par.shapes.value.(!(pl.cur_shape.shape)).shape, pl.mat);
         pl.cur_shape.base := !(new_cur_shape.base);
         pl.cur_shape.shape := !(new_cur_shape.shape);
-        pl.cur_shape.color := !(new_cur_shape.color)
+        pl.cur_shape.color := !(new_cur_shape.color);
+        clear_play(pl);
+
       );
     the_end
   )
